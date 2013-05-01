@@ -1,10 +1,12 @@
 # babar
 
-A Clojure library designed to ... well, that part is up to you.
+The beginnings of a humble language
 
 ## Usage
 
-FIXME
+Launch a REPL
+
+    lein run
 
 ## License
 

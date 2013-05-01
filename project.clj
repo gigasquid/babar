@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :main babar.repl
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [instaparse "1.0.1"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]

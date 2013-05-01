@@ -6,14 +6,18 @@
   (insta/parser
    "expr = number | vector | operation
     operation = operator space+ vector
-    operator = '+'
+    operator = '+' | '-' | '*' | '/'
     vector = snumber+ number
     <snumber> = (number space)*
     <space> = <#'[ ]+'>
     number = #'[0-9]+'"))
 
 (defn choose-operator [op]
-  +)
+  (case op
+    "+" +
+    "-" -
+    "*" *
+    "/" /))
 
 (def transform-options
   {:number read-string
@@ -24,4 +28,3 @@
 
 (defn parse [input]
   (->> (parser input) (insta/transform transform-options)))
-
