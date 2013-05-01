@@ -9,7 +9,7 @@
 
 (defn -main [& args]
   (println "Hello Babar!")
-  (println "->")
+  (println "===============")
   (flush)
   (repl))
 
