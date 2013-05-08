@@ -5,12 +5,15 @@
 (def parser
   (insta/parser
    "expr = number | vector | operation
-    operation = operator space+ vector
+    operation = operator space vector
     operator = '+' | '-' | '*' | '/'
     vector = snumber+ number
-    <snumber> = (number space)*
+    <snumber> = (number space)+
     <space> = <#'[ ]+'>
-    number = #'[0-9]+'"))
+    number = integer | decimal
+    <decimal> = #'-?[0-9]+\\.[0-9]+'
+    <integer> = #'-?[0-9]'+"))
+
 
 (defn choose-operator [op]
   (case op
