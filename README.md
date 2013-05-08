@@ -2,18 +2,27 @@
 
 The beginnings of a humble language
 
-## Usage
 
-Numbers and Vectors
+## Data Types
+### Integers
+### Decimals
 ```clojure
-  1 ;=> 1
-  1 2 3 4 ;=> [1 2 3 4]
-  + 1 2 3 4 5 ;=> 15
-  - 5 3 1 ;=> 1
-  * 2 3 2 ;=> 12
-  / 4 2 ;=> 2
+1 ;=> 1
+2.3 ;=> 2.3
+-3.4 ;=> 3.4
+``
+### Vectors
+You can construct vectors by simply entering numbers with spaces
+```clojure
+1 2 3 4 ;=> [1 2 3 4]
 ```
 
+## Operations
++ - * %
+operator vector
+```clojure
++ 1 2 3 4 5 ;=> 15
+```
 
 ## REPL
 Launch a REPL
