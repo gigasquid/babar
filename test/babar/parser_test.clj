@@ -20,7 +20,9 @@
   (parse "-5.0 -2 -3.2") => [-5.0 -2 -3.2]
   (parse "[1]") => [1]
   (parse "[ 1 ]") => [1]
-  (parse "[1 2 3]") => [1 2 3])
+  (parse "[1 2 3]") => [1 2 3]
+  (parse "[\"cat\" \"dog\" \"bird\"]") => ["cat" "dog" "bird"]
+  (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"])
 
 (facts "about operations"
   (parse "+ 1 2") => 3

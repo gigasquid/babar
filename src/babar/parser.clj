@@ -7,8 +7,10 @@
    "expr = number | string | vector | operation
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
-    vector = ((space)* number (space)*)+ | <#'\\['> ((space)* number+ (space)*)+ <#'\\]'>
+    vector = ((space)* item (space)*)+ |
+             <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[ ]+'>
+    <item> = string | number
     string =   #'^\".+\"'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
