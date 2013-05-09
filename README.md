@@ -10,7 +10,8 @@ The beginnings of a humble language
 1 ;=> 1
 2.3 ;=> 2.3
 -3.4 ;=> 3.4
-``
+```
+
 ### Vectors
 You can construct vectors by simply entering numbers with spaces
 ```clojure
