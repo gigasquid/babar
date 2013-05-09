@@ -8,12 +8,19 @@
   (parse "-1") => -1
   (parse "-1.3") => -1.3)
 
+(facts "about parsing strings"
+  (parse "cat") => "cat"
+  (parse "The cat is nice.") => "The cat is nice.")
+
 (facts "about parsing vectors"
   (parse "1 2")
   (parse "1 2 3 4") => [1 2 3 4]
   (parse "1 2 3 4 5") => [1 2 3 4 5]
   (parse "1.2 3.4 2.5") => [1.2 3.4 2.5]
-  (parse "-5.0 -2 -3.2") => [-5.0 -2 -3.2])
+  (parse "-5.0 -2 -3.2") => [-5.0 -2 -3.2]
+  (parse "[1]") => [1]
+  (parse "[ 1 ]") => [1]
+  (parse "[1 2 3]") => [1 2 3])
 
 (facts "about operations"
   (parse "+ 1 2") => 3

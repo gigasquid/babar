@@ -4,15 +4,17 @@
 
 (def parser
   (insta/parser
-   "expr = number | vector | operation
+   "expr = number | string | vector | operation
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
-    vector = snumber+ number
-    <snumber> = (number space)+
+    vector = ((space)* number (space)*)+ | <#'\\['> ((space)* number+ (space)*)+ <#'\\]'>
     <space> = <#'[ ]+'>
+    string =   #'^\".+\"'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]'+"))
+
+; (re-find #"^\"[a-zA-z][0-9a-zA-Z\-\_]*\"$" "\"test-1-2\"")
 
 
 (defn choose-operator [op]
@@ -24,6 +26,7 @@
 
 (def transform-options
   {:number read-string
+   :string read-string
    :vector (comp vec list)
    :operator choose-operator
    :operation apply
