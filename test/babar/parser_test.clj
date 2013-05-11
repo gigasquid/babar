@@ -4,13 +4,20 @@
 
 (facts "about parsing numbers"
   (parse "1") => 1
+  (parse "100") => 100
   (parse "1.2") => 1.2
+  (parse "100.2") => 100.2
   (parse "-1") => -1
-  (parse "-1.3") => -1.3)
+  (parse "-1.3") => -1.3
+  (parse "-140.3") => -140.3)
 
 (facts "about parsing strings"
-  (parse "cat") => "cat"
-  (parse "The cat is nice.") => "The cat is nice.")
+  (parse "\"cat\"") => "cat"
+  (parse "\"The cat is nice.\"") => "The cat is nice.")
+
+(facts "about parsing booleans"
+  (parse "false") => false
+  (parse "true") => true)
 
 (facts "about parsing vectors"
   (parse "1 2")
@@ -22,7 +29,8 @@
   (parse "[ 1 ]") => [1]
   (parse "[1 2 3]") => [1 2 3]
   (parse "[\"cat\" \"dog\" \"bird\"]") => ["cat" "dog" "bird"]
-  (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"])
+  (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"]
+  (parse "true false true") => [true false true])
 
 (facts "about operations"
   (parse "+ 1 2") => 3
