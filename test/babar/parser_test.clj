@@ -35,7 +35,8 @@
   (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"]
   (parse "true false true") => [true false true]
   (parse ":key1 :key2 :key3") => [:key1 :key2 :key3]
-  (parse "1 1.2 true \"cat\" :key1") => [1 1.2 true "cat" :key1])
+  (parse "1 1.2 true \"cat\" :key1") => [1 1.2 true "cat" :key1]
+  (parse "[1 [2 3]]") => [1 [2 3]])
 
 (facts "about operations"
   (parse "+ 1 2") => 3

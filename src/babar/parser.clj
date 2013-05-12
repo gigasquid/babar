@@ -7,10 +7,11 @@
    "expr = item | operation | vector
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
-    vector = ((space)* item (space)*)+ |
-             <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
+    <vector>  = svector | bvector
+    svector = ((space)* item (space)*)+
+    bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[ ]+'>
-    <item> = string | number | boolean | keyword
+    <item> = string | number | boolean | keyword | bvector
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
@@ -19,6 +20,7 @@
     <integer> = #'-?[0-9]+'"))
 
 ; (re-find #"^\"[a-zA-z][0-9a-zA-Z\-\_]*\"$" "\"test-1-2\"")
+
 
 (defn choose-operator [op]
   (case op
@@ -34,7 +36,8 @@
    :string str
    :keyword keyword
    :boolean read-string
-   :vector (comp vec list)
+   :svector (comp vec list)
+   :bvector (comp vec list)
    :operator choose-operator
    :operation apply
    :expr identity})
