@@ -30,7 +30,8 @@
   (parse "[1 2 3]") => [1 2 3]
   (parse "[\"cat\" \"dog\" \"bird\"]") => ["cat" "dog" "bird"]
   (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"]
-  (parse "true false true") => [true false true])
+  (parse "true false true") => [true false true]
+  (parse "1 1.2 true \"cat\"") => [1 1.2 true "cat"])
 
 (facts "about operations"
   (parse "+ 1 2") => 3
