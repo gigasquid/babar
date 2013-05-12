@@ -19,6 +19,9 @@
   (parse "false") => false
   (parse "true") => true)
 
+(facts "about parsing keywords"
+  (parse ":key1") => :key1)
+
 (facts "about parsing vectors"
   (parse "1 2")
   (parse "1 2 3 4") => [1 2 3 4]
@@ -31,7 +34,8 @@
   (parse "[\"cat\" \"dog\" \"bird\"]") => ["cat" "dog" "bird"]
   (parse "[1 2.0 -4.5 \"cat\"]") => [1 2.0 -4.5 "cat"]
   (parse "true false true") => [true false true]
-  (parse "1 1.2 true \"cat\"") => [1 1.2 true "cat"])
+  (parse ":key1 :key2 :key3") => [:key1 :key2 :key3]
+  (parse "1 1.2 true \"cat\" :key1") => [1 1.2 true "cat" :key1])
 
 (facts "about operations"
   (parse "+ 1 2") => 3

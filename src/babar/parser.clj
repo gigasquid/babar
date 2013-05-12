@@ -4,14 +4,15 @@
 
 (def parser
   (insta/parser
-   "expr = item | operation
+   "expr = item | operation | vector
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
     vector = ((space)* item (space)*)+ |
              <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[ ]+'>
-    <item> = string | number | boolean
+    <item> = string | number | boolean | keyword
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
+    keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
@@ -31,6 +32,7 @@
 (def transform-options
   {:number read-string
    :string str
+   :keyword keyword
    :boolean read-string
    :vector (comp vec list)
    :operator choose-operator
