@@ -4,7 +4,7 @@
 
 (def parser
   (insta/parser
-   "expr = item | operation | vector | map
+   "expr = item | operation | vector
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
     map = <'{'> ((space)* item (space)*)+ <'}'>
@@ -29,7 +29,6 @@
     "*" *
     "/" /))
 
-(read-string "true")
 
 (def transform-options
   {:number read-string
