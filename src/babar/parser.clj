@@ -4,14 +4,15 @@
 
 (def parser
   (insta/parser
-   "expr = item | operation | vector
+   "expr = item | operation | vector | map
     operation = operator space vector
     operator = '+' | '-' | '*' | '/'
+    map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[ ]+'>
-    <item> = string | number | boolean | keyword | bvector
+    <item> = string | number | boolean | keyword | bvector | map
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
@@ -20,7 +21,6 @@
     <integer> = #'-?[0-9]+'"))
 
 ; (re-find #"^\"[a-zA-z][0-9a-zA-Z\-\_]*\"$" "\"test-1-2\"")
-
 
 (defn choose-operator [op]
   (case op
@@ -38,6 +38,7 @@
    :boolean read-string
    :svector (comp vec list)
    :bvector (comp vec list)
+   :map hash-map
    :operator choose-operator
    :operation apply
    :expr identity})
