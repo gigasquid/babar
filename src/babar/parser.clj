@@ -30,12 +30,15 @@
 (defn eval-vector [& args]
   (vec (map eval args)))
 
+(defn eval-operation [op vector]
+  (apply op (map eval vector)))
+
 (defn eval-command [command vector]
   (case command
-    "+" (apply + (map eval vector))
-    "-" (apply - (map eval vector))
-    "*" (apply * (map eval vector))
-    "/" (apply / (map eval vector))
+    "+" (eval-operation + vector)
+    "-" (eval-operation - vector)
+    "*" (eval-operation * vector)
+    "/" (eval-operation / vector)
     "def" (eval (babar-def (str (first vector)) (second vector)))))
 
 

@@ -54,7 +54,10 @@
   (parse "/ 4 2") => 2
   (parse "/ 8 2 2") => 2
   (parse "+ 1.2 3.4 2.5") => 7.1
-  (parse "+ 5.2 -2.6 1.2") => 3.8)
+  (parse "+ 5.2 -2.6 1.2") => 3.8
+  (parse "* 2 5") => 10
+  (parse "- 10 5") => 5
+  (parse "/ 10 5") => 2)
 
 (declare dog1)
 (facts "about def"
