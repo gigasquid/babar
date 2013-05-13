@@ -42,7 +42,7 @@
     "-" (babar-operation - vector)
     "*" (babar-operation * vector)
     "/" (babar-operation / vector)
-    "def" (eval (babar-def (str (first vector)) (second vector)))
+    "def" (babar-def (str (first vector)) (second vector))
     "if" (babar-if vector)))
 
 
