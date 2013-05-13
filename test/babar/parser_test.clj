@@ -71,4 +71,7 @@
 (facts "about if"
   (parse "if true 3 4") => 3
   (parse "if dog1 5 2") => 2
+  (parse "[ (if true 3 2) 5 6 ]") => [3 5 6]
+  (parse "if true (if true 4 3) 6") => 4
   (against-background (before :facts (parse "def dog1 false"))))
+

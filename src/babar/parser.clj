@@ -5,14 +5,15 @@
 (def parser
   (insta/parser
    "expr = item | command | vector
-    command = commandkey space vector
+    command = commandkey space vector |
+               <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = string / number / boolean / keyword / bvector / map / identifier
+    <item> = command / string / number / boolean / keyword / bvector / map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if'
