@@ -24,21 +24,19 @@
     <integer> = #'-?[0-9]+'"))
 
 
-;(insta/parses parser "true")
-
 (defn babar-def [s v]
   `(def ~(symbol s) ~v))
 
+(defn eval-vector [& args]
+  (vec (map eval args)))
 
 (defn eval-command [command vector]
   (case command
-    "+" (apply + vector)
-    "-" (apply - vector)
-    "*" (apply * vector)
-    "/" (apply / vector)
-    "def" (eval (babar-def (str (first vector)) (second vector)))
-    )
-  )
+    "+" (apply + (map eval vector))
+    "-" (apply - (map eval vector))
+    "*" (apply * (map eval vector))
+    "/" (apply / (map eval vector))
+    "def" (eval (babar-def (str (first vector)) (second vector)))))
 
 
 (def transform-options
@@ -49,10 +47,10 @@
    :svector (comp vec list)
    :bvector (comp vec list)
    :map hash-map
-   :identifier identity
+   :identifier read-string
    :commandkey identity
    :command eval-command
-   :expr identity})
+   :expr eval})
 
 (defn parse [input]
   (->> (parser input) (insta/transform transform-options)))

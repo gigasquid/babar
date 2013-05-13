@@ -59,4 +59,7 @@
 (declare dog1)
 (facts "about def"
   dog1  => 16
+  (parse "dog1") => 16
+  (parse "1 3 4 dog1") => [1 3 4 16]
+  (parse "+ 1 dog1") => 17
   (against-background (before :facts (parse "def dog1 16"))))
