@@ -18,7 +18,7 @@
               map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def' | 'if'
+    <special> = 'def' | 'if' | 'defn'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
@@ -27,10 +27,16 @@
     <integer> = #'-?[0-9]+'"))
 
 
+(defn babar-defn [v]
+  (let [s (first v)
+        params (second v)
+        expr (nth v 2)]
+    `(defn ~s ~params ~expr)))
+
 (defn babar-def [v]
-  (let [s (str (first v))
+  (let [s (first v)
         val (second v)]
-    `(def ~(symbol s) ~val)))
+    `(def ~s ~val)))
 
 (defn babar-if [v]
   (let [[test then else] v]
@@ -46,6 +52,7 @@
     "*" (babar-operation * v)
     "/" (babar-operation / v)
     "def" (babar-def v)
+    "defn" (babar-defn v)
     "if" (babar-if v)))
 
 
