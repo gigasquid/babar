@@ -4,7 +4,8 @@
 
 (def parser
   (insta/parser
-   "expr = item | command | vector
+   "program = expr
+    expr = item | command | vector
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
@@ -29,18 +30,18 @@
   `(def ~(symbol s) ~v))
 
 (defn babar-if [v]
-  (let [[test then else] (eval v)]
-   (if test then else)))
+  (let [[test then else] v]
+    `(if ~test ~then ~else)))
 
-(defn eval-operation [op vector]
-  (apply op (eval vector)))
+(defn babar-operation [op vector]
+  `(apply ~op ~vector))
 
-(defn eval-command [command vector]
+(defn babar-command [command vector]
   (case command
-    "+" (eval-operation + vector)
-    "-" (eval-operation - vector)
-    "*" (eval-operation * vector)
-    "/" (eval-operation / vector)
+    "+" (babar-operation + vector)
+    "-" (babar-operation - vector)
+    "*" (babar-operation * vector)
+    "/" (babar-operation / vector)
     "def" (eval (babar-def (str (first vector)) (second vector)))
     "if" (babar-if vector)))
 
@@ -55,8 +56,9 @@
    :map hash-map
    :identifier read-string
    :commandkey identity
-   :command eval-command
-   :expr eval})
+   :command babar-command
+   :expr identity
+   :program eval})
 
 (defn parse [input]
   (->> (parser input) (insta/transform transform-options)))
