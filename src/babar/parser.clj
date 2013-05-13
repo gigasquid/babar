@@ -15,7 +15,7 @@
     <item> = string / number / boolean / keyword / bvector / map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def'
+    <special> = 'def' | 'if'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
@@ -23,15 +23,15 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-
 (defn babar-def [s v]
   `(def ~(symbol s) ~v))
 
-(defn eval-vector [& args]
-  (vec (map eval args)))
+(defn babar-if [v]
+  (let [[test then else] (eval v)]
+   (if test then else)))
 
 (defn eval-operation [op vector]
-  (apply op (map eval vector)))
+  (apply op (eval vector)))
 
 (defn eval-command [command vector]
   (case command
@@ -39,7 +39,8 @@
     "-" (eval-operation - vector)
     "*" (eval-operation * vector)
     "/" (eval-operation / vector)
-    "def" (eval (babar-def (str (first vector)) (second vector)))))
+    "def" (eval (babar-def (str (first vector)) (second vector)))
+    "if" (babar-if vector)))
 
 
 (def transform-options

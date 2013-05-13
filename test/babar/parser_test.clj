@@ -66,3 +66,8 @@
   (parse "1 3 4 dog1") => [1 3 4 16]
   (parse "+ 1 dog1") => 17
   (against-background (before :facts (parse "def dog1 16"))))
+
+(facts "about if"
+  (parse "if true 3 4") => 3
+  (parse "if dog1 5 2") => 2
+  (against-background (before :facts (parse "def dog1 false"))))
