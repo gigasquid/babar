@@ -55,3 +55,8 @@
   (parse "/ 8 2 2") => 2
   (parse "+ 1.2 3.4 2.5") => 7.1
   (parse "+ 5.2 -2.6 1.2") => 3.8)
+
+(declare dog1)
+(facts "about def"
+  dog1  => 16
+  (against-background (before :facts (parse "def dog1 16"))))
