@@ -14,7 +14,8 @@
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / string / number / boolean / keyword / bvector / map / identifier
+    <item> = command / string / number / boolean / keyword / bvector /
+              map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if'
@@ -26,24 +27,26 @@
     <integer> = #'-?[0-9]+'"))
 
 
-(defn babar-def [s v]
-  `(def ~(symbol s) ~v))
+(defn babar-def [v]
+  (let [s (str (first v))
+        val (second v)]
+    `(def ~(symbol s) ~val)))
 
 (defn babar-if [v]
   (let [[test then else] v]
     `(if ~test ~then ~else)))
 
-(defn babar-operation [op vector]
-  `(apply ~op ~vector))
+(defn babar-operation [op v]
+  `(apply ~op ~v))
 
-(defn babar-command [command vector]
+(defn babar-command [command v]
   (case command
-    "+" (babar-operation + vector)
-    "-" (babar-operation - vector)
-    "*" (babar-operation * vector)
-    "/" (babar-operation / vector)
-    "def" (babar-def (str (first vector)) (second vector))
-    "if" (babar-if vector)))
+    "+" (babar-operation + v)
+    "-" (babar-operation - v)
+    "*" (babar-operation * v)
+    "/" (babar-operation / v)
+    "def" (babar-def v)
+    "if" (babar-if v)))
 
 
 (def transform-options
