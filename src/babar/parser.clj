@@ -11,7 +11,7 @@
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
-    <space> = <#'[ ]+'>
+    <space> = <#'[\\s\\t\\n]+'>
     <item> = string / number / boolean / keyword / bvector / map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
@@ -22,6 +22,7 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (defn babar-def [s v]
   `(def ~(symbol s) ~v))

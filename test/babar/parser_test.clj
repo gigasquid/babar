@@ -37,7 +37,8 @@
   (parse ":key1 :key2 :key3") => [:key1 :key2 :key3]
   (parse "1 1.2 true \"cat\" :key1") => [1 1.2 true "cat" :key1]
   (parse "[1 [2 3]]") => [1 [2 3]]
-  (parse "1 2 3 {:cat 1}") => [1 2 3 {:cat 1}])
+  (parse "1 2 3 {:cat 1}") => [1 2 3 {:cat 1}]
+  (parse  "1 2 \t 3 \n 4") => [1 2 3 4])
 
 (facts "about parsing maps"
   (parse "{:cat 1 :dog 2}") => {:cat 1 :dog 2}
