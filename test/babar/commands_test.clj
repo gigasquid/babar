@@ -32,3 +32,15 @@
   (parse "if true (if true 4 3) 6") => 4
   (against-background (before :facts (parse "def dog1 false"))))
 
+(facts "about ="
+  (parse "= 1 1") => true
+  (parse "= 3 4") => false)
+
+(facts "about >"
+  (parse "> 2 1") => true
+  (parse "> 3 4") => false)
+
+(facts "about <"
+  (parse "< 2 1") => false
+  (parse "< 3 4") => true)
+

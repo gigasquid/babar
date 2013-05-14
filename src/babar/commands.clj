@@ -15,9 +15,9 @@
   (let [[test then else] v]
     `(if ~test ~then ~else)))
 
-(defn babar-equal [v]
+(defn babar-compare [op v]
   (let [[x y] v]
-    `(= ~x ~y)))
+    `(~op ~x ~y)))
 
 (defn babar-operation [op v]
   `(apply ~op ~v))
@@ -31,7 +31,9 @@
     "def" (babar-def v)
     "defn" (babar-defn v)
     "if" (babar-if v)
-    "=" (babar-equal v)))
+    "=" (babar-compare = v)
+    ">" (babar-compare > v)
+    "<" (babar-compare < v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

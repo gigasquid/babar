@@ -22,7 +22,7 @@
               map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def' | 'if' | 'defn' | '='
+    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
