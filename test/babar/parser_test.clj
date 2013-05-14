@@ -29,6 +29,7 @@
   (parse "1.2 3.4 2.5") => [1.2 3.4 2.5]
   (parse "-5.0 -2 -3.2") => [-5.0 -2 -3.2]
   (parse "[1]") => [1]
+  (parse "[]") => []
   (parse "[ 1 ]") => [1]
   (parse "[1 2 3]") => [1 2 3]
   (parse "[\"cat\" \"dog\" \"bird\"]") => ["cat" "dog" "bird"]
@@ -69,9 +70,22 @@
   (against-background (before :facts (parse "def dog1 16"))))
 
 (declare dog2)
-(facts "about defn"
+(facts "about defn and functions"
   (dog2 2)  => 8
-  (against-background (before :facts (parse "defn dog2 [x] (+ x 1 2 3)"))))
+  (parse "dog2(2)") => 8
+  (against-background (before :facts (parse "defn dog2 [x] + x 1 2 3"))))
+
+(declare dog3)
+(facts "about functions with many arguments"
+  (dog3 3 4 5)  => 12
+  (parse "dog3(3 4 5)") => 12
+  (against-background (before :facts (parse "defn dog3 [x y z] + x y z"))))
+
+(declare dog4)
+(facts "about functions with no arguments"
+  (dog4)  => 11
+  (parse "dog4()") => [3 4 4]
+  (against-background (before :facts (parse "defn dog4 [] [3 4 4]"))))
 
 
 (facts "about if"

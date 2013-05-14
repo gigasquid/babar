@@ -5,14 +5,16 @@
 (def parser
   (insta/parser
    "program = expr
-    expr = item | command | vector
+    expr = item | command | vector | functioncall
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
+    functioncall = identifier <'('>  (space)* ?[vector] (space)* <')'>
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
-    bvector =  <#'\\['> ((space)* item+ (space)*)+ <#'\\]'>
+    bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
+               <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
     <item> = command / string / number / boolean / keyword / bvector /
               map / identifier
@@ -25,7 +27,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
 
 (defn babar-defn [v]
   (let [s (first v)
@@ -55,6 +56,8 @@
     "defn" (babar-defn v)
     "if" (babar-if v)))
 
+(defn babar-functioncall [sym & [v]]
+  `(apply ~sym ~v))
 
 (def transform-options
   {:number read-string
@@ -67,6 +70,7 @@
    :identifier read-string
    :commandkey identity
    :command babar-command
+   :functioncall babar-functioncall
    :expr identity
    :program eval})
 
