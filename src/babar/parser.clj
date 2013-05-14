@@ -1,5 +1,6 @@
 (ns babar.parser
-  (:require [instaparse.core :as insta]))
+  (:require [instaparse.core :as insta]
+            [babar.commands :refer :all]))
 
 
 (def parser
@@ -21,7 +22,7 @@
               map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def' | 'if' | 'defn'
+    <special> = 'def' | 'if' | 'defn' | '='
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
@@ -29,36 +30,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-(defn babar-defn [v]
-  (let [s (first v)
-        params (second v)
-        expr (nth v 2)]
-    `(defn ~s ~params ~expr)))
-
-(defn babar-def [v]
-  (let [s (first v)
-        val (second v)]
-    `(def ~s ~val)))
-
-(defn babar-if [v]
-  (let [[test then else] v]
-    `(if ~test ~then ~else)))
-
-(defn babar-operation [op v]
-  `(apply ~op ~v))
-
-(defn babar-command [command v]
-  (case command
-    "+" (babar-operation + v)
-    "-" (babar-operation - v)
-    "*" (babar-operation * v)
-    "/" (babar-operation / v)
-    "def" (babar-def v)
-    "defn" (babar-defn v)
-    "if" (babar-if v)))
-
-(defn babar-functioncall [sym & [v]]
-  `(apply ~sym ~v))
 
 (def transform-options
   {:number read-string
