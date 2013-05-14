@@ -9,7 +9,8 @@
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
-    functioncall = identifier <'('>  (space)* ?[vector] (space)* <')'>
+    functioncall =  <'('> (space)* identifier (space)* ?[vector] (space)* <')'> |
+                    identifier <':'> ?[vector]
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
