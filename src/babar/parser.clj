@@ -22,13 +22,14 @@
               map / identifier
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
+    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or' | 'import'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'\\w+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (def transform-options
   {:number read-string

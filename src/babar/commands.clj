@@ -28,6 +28,9 @@
 (defn babar-or [v]
   `(reduce #(or %1 %2) ~v))
 
+(defn babar-import [v]
+  `(require '[~(symbol (first v)) :refer :all]))
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)
@@ -41,7 +44,8 @@
     ">" (babar-compare > v)
     "<" (babar-compare < v)
     "and" (babar-and v)
-    "or" (babar-or v)))
+    "or" (babar-or v)
+    "import" (babar-import v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

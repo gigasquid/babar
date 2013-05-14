@@ -57,3 +57,7 @@
   (parse "or true true true true") => true
   (parse "or true true false true") => true)
 
+
+(facts "about import"
+   (parse "import \"clojure.java.io\"")
+   (class (parse "file")) => clojure.java.io$file)
