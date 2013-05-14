@@ -24,7 +24,7 @@
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or' | 'import'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
-    keyword = <#'[:]'> #'\\w+'
+    keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
