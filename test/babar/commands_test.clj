@@ -44,3 +44,16 @@
   (parse "< 2 1") => false
   (parse "< 3 4") => true)
 
+(facts "about and"
+  (parse "and true true") => true
+  (parse "and true false") => false
+  (parse "and true true true true") => true
+  (parse "and true true false true") => false)
+
+(facts "about or"
+  (parse "or true true") => true
+  (parse "or true false") => true
+  (parse "or false false") => false
+  (parse "or true true true true") => true
+  (parse "or true true false true") => true)
+

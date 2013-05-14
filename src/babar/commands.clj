@@ -22,6 +22,12 @@
 (defn babar-operation [op v]
   `(apply ~op ~v))
 
+(defn babar-and [v]
+  `(reduce #(and %1 %2) ~v))
+
+(defn babar-or [v]
+  `(reduce #(or %1 %2) ~v))
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)
@@ -33,7 +39,10 @@
     "if" (babar-if v)
     "=" (babar-compare = v)
     ">" (babar-compare > v)
-    "<" (babar-compare < v)))
+    "<" (babar-compare < v)
+    "and" (babar-and v)
+    "or" (babar-or v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))
+
