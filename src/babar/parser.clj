@@ -2,6 +2,12 @@
   (:require [instaparse.core :as insta]
             [babar.commands :refer :all]))
 
+(def commitments (atom {}))
+
+(defrecord Commitment [expr val completed errors])
+
+(defn make-commitment [expr val completed errors]
+  (Commitment. expr val completed errors))
 
 (def parser
   (insta/parser
@@ -18,8 +24,9 @@
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / string / number / boolean / keyword / bvector /
+    <item> = command / commitment/ string / number / boolean / keyword / bvector /
               map / identifier
+    commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or' | 'import'
@@ -30,6 +37,8 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+(defn commitment [name]
+  `((keyword ~name) @commitments))
 
 (def transform-options
   {:number read-string
@@ -39,6 +48,7 @@
    :svector (comp vec list)
    :bvector (comp vec list)
    :map hash-map
+   :commitment commitment
    :identifier read-string
    :commandkey identity
    :command babar-command

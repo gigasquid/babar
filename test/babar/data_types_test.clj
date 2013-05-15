@@ -45,3 +45,9 @@
   (parse "{:cat 1 :dog 2}") => {:cat 1 :dog 2}
   (parse "{:cat [1 3 4]}") => {:cat [1 3 4]}
   (parse "{:cat {:dog 1}}") => {:cat {:dog 1}})
+
+(facts "about parsing commitments"
+  (= babar.parser.Commitment (type (parse "*raise-temp"))) => true
+  (against-background  (before :facts
+                               (swap! commitments merge
+                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil)}))))
