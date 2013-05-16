@@ -20,9 +20,9 @@
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / commitment/ request/ query/
-             string / number / boolean / keyword / bvector /
-             map / identifier
+    <item> = command / speech-act / string / number / boolean /
+             keyword / bvector / map / identifier
+    speech-act = commitment | query | request
     query = 'answer.query' <space> querytype <space> commitment
     querytype = 'request.value' | 'request.details' | 'request.completed' |
                 'request.created' | 'request.errors'
@@ -54,6 +54,7 @@
    :map hash-map
    :commitment commitment
    :request request
+   :speech-act identity
    :identifier read-string
    :commandkey identity
    :command babar-command
