@@ -4,7 +4,7 @@
 
 (def parser
   (insta/parser
-   "program = (expr <';'>)+ expr | expr
+   "program =   (expr (<'\n'>))+ expr | (expr (<';'>) space)+ expr | expr
     expr = item | command | vector | functioncall
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
@@ -17,7 +17,7 @@
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
-    <space> = <#'[\\s\\t\\n]+'>
+    <space> = <#'[\\s\\t]+'>
     <item> = command / commitment/ request/
              string / number / boolean / keyword / bvector /
              map / identifier
@@ -37,7 +37,7 @@
 
 
 ;(parse "+ 1 3")
-;(parse "def x 2;(+ x 1)")
+;(parse "def x 2\n (+ x 1); (+ x 2)")
 ;(doall (map eval ()) )
 ;(parser "accept.request *up-temp fn [x] (+ x 1)")
                               ;(parse "accept.request *up-temp fn [x] (+ x 1)")
