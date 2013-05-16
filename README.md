@@ -32,7 +32,7 @@ to input the square brackets.  If you just put in space delimited
 items, it will automatically constuct a vector for you.
 
 ```clojure
-1 2 3 4 => [1 2 3 4]
+1 2 3 4 ;=> [1 2 3 4]
 ```
 
 If you want to nest the vectors, you need to include the square
