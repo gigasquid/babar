@@ -2,13 +2,6 @@
   (:require [instaparse.core :as insta]
             [babar.commands :refer :all]))
 
-(def commitments (atom {}))
-
-(defrecord Commitment [expr val completed errors])
-
-(defn make-commitment [expr val completed errors]
-  (Commitment. expr val completed errors))
-
 (def parser
   (insta/parser
    "program = expr
@@ -17,25 +10,44 @@
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
     functioncall =  <'('> (space)* identifier (space)* ?[vector] (space)* <')'> |
-                    identifier <':'> ?[vector]
+                    identifier <':'> ?[vector] |
+                    <'('> (space)* command (space)* ?[vector] (space)* <')'>
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / commitment/ string / number / boolean / keyword / bvector /
-              map / identifier
+    <item> = command / commitment/ request/
+             string / number / boolean / keyword / bvector /
+             map / identifier
+    request = 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*'
+               <space> expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
-    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or' | 'import'
+    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
+                | 'import' | 'fn'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
+;(parser "accept.request *up-temp (+ 1 1)")
+;(parse "accept.request *up-temp (+ 1 1)")
+
+(def commitments (atom {}))
+
+(defrecord Commitment [fn val completed errors])
+
+(defn make-commitment [fn val completed errors]
+  (Commitment. fn val completed errors))
+
+(defn request [name id expr]
+  `(swap! commitments merge
+          {(keyword ~id) (make-commitment ~expr nil nil nil)}))
 
 (defn commitment [name]
   `((keyword ~name) @commitments))
@@ -49,6 +61,7 @@
    :bvector (comp vec list)
    :map hash-map
    :commitment commitment
+   :request request
    :identifier read-string
    :commandkey identity
    :command babar-command

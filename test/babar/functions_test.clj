@@ -22,3 +22,9 @@
   (parse "dog4:") => [3 4 4]
   (against-background (before :facts (parse "defn dog4 [] [3 4 4]"))))
 
+(facts "about anonymous functions"
+  ((parse "fn [x] (+ x 1)") 3) => 4
+  (parse "((fn [x] + x 1) 3)")  => 4
+  (parse "((fn [x y z] + x y z) [1 2 3])") => 6
+  (parse "((fn [] [4 5 6]))") => [4 5 6])
+

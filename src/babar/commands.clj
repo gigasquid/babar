@@ -6,6 +6,11 @@
         expr (nth v 2)]
     `(defn ~s ~params ~expr)))
 
+(defn babar-fn [v]
+  (let [params (first v)
+        expr (second v)]
+    `(fn ~params ~expr)))
+
 (defn babar-def [v]
   (let [s (first v)
         val (second v)]
@@ -39,6 +44,7 @@
     "/" (babar-operation / v)
     "def" (babar-def v)
     "defn" (babar-defn v)
+    "fn" (babar-fn v)
     "if" (babar-if v)
     "=" (babar-compare = v)
     ">" (babar-compare > v)
