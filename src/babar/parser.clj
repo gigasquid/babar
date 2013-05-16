@@ -37,14 +37,6 @@
     <integer> = #'-?[0-9]+'"))
 
 
-;(parse "+ 1 3")
-;(parse "def x 2\n (+ x 1); (+ x 2)")
-;(doall (map eval ()) )
-;(parser "accept.request *up-temp fn [x] (+ x 1)")
-                              ;(parse "accept.request *up-temp fn [x] (+ x 1)")
-
-
-
 (defn eval-program [expr-list]
   (let [evaled-list (doall (map eval expr-list))]
     (last evaled-list)))
@@ -56,12 +48,15 @@
 (defn make-commitment [fn val completed errors]
   (Commitment. fn val completed errors))
 
+
 (defn request [name id expr]
-  `(swap! commitments merge
-          {(keyword ~id) (make-commitment ~expr nil nil nil)}))
+  `((keyword ~id)
+    (swap! commitments merge
+           {(keyword ~id) (make-commitment ~expr nil nil nil)})))
 
 (defn commitment [name]
   `((keyword ~name) @commitments))
+
 
 (def transform-options
   {:number read-string

@@ -12,7 +12,7 @@
   (parse "def z 2\n(+ z 1)") => 3)
 
 (facts "about ignorning newline as whitespace in expression"
-  (parse "(+ 1\n 3)") => 2
-  (parse "+ 1\n 3") => 2)
+  (parse "(+ 1\n 3)") => 4
+  (parse "+ 1\n 3") => 4)
 
 
