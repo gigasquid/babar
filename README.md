@@ -105,7 +105,7 @@ You can create anonymous functions with the fn [x] syntax from
 clojure. And call them with surrounding parens.
 ````clojure
    ((fn [x] + x 1) 3) ;=> 4
-   ((fn [x y z] + x y z) [1 2 3])") ;=> 6
+   ((fn [x y z] + x y z) [1 2 3]) ;=> 6
    ((fn [] [4 5 6]))") ;=> [4 5 6]
 ```
 
