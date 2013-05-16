@@ -3,7 +3,11 @@
 A Programming Language with Speech Acts inspired by
 [Elephant 2000](http://www-formal.stanford.edu/jmc/elephant/elephant.html).
 The parser uses the wonderful Clojure
-[Instaparse](https://github.com/Engelberg/instaparse) library
+[Instaparse](https://github.com/Engelberg/instaparse) library.
+The language goals are to explore some concepts of speech acts. To
+support this goal, there is some syntatic sugar to make the language
+more readable as sentances. The main manifestation is that parens
+are optional.
 
 This language is a playground, so don't expect things to
 be stable or documentation up to date.
