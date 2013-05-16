@@ -4,7 +4,7 @@
 
 (def parser
   (insta/parser
-   "program = expr
+   "program = (expr <';'>)+ expr | expr
     expr = item | command | vector | functioncall
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
@@ -35,8 +35,18 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-;(parser "accept.request *up-temp (+ 1 1)")
-;(parse "accept.request *up-temp (+ 1 1)")
+
+;(parse "+ 1 3")
+;(parse "def x 2;(+ x 1)")
+;(doall (map eval ()) )
+;(parser "accept.request *up-temp fn [x] (+ x 1)")
+                              ;(parse "accept.request *up-temp fn [x] (+ x 1)")
+
+
+
+(defn eval-program [expr-list]
+  (let [evaled-list (doall (map eval expr-list))]
+    (last evaled-list)))
 
 (def commitments (atom {}))
 
@@ -67,7 +77,7 @@
    :command babar-command
    :functioncall babar-functioncall
    :expr identity
-   :program eval})
+   :program (comp eval-program list)})
 
 (defn parse [input]
   (->> (parser input) (insta/transform transform-options)))
