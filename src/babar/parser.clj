@@ -40,21 +40,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-(defn unfufilled-commitments []
-  (into {} (filter (comp nil? :completed val) @commitments)))
-
-(defn fufill-commitment [entry]
-  (try
-    (let [[k c] entry
-         result ((:fn c))]
-      [ k (merge c {:val result :completed (gen-timestamp)})]
-      )
-    (catch Exception e
-      [ (first entry) (merge (last entry) {:errors (.getMessage e)})])))
-
-(defn fufill-commitments []
-  (swap! commitments merge
-         (into {} (map fufill-commitment (unfufilled-commitments)))))
 
 (defn babar-eval [expr]
   (do

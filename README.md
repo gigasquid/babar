@@ -113,6 +113,46 @@ clojure. And call them with surrounding parens.
    ((fn [] [4 5 6])) ;=> [4 5 6]
 ```
 
+## Speech Acts
+According to John Searle's
+[Speech Acts](http://en.wikipedia.org/wiki/Speech_act)
+There are
+[Pllocutionary Acts] (http://en.wikipedia.org/wiki/Illocutionary_act)
+that involve the pragmatic meaning of a behind a sentence. Some of the
+english verbs denoting these acts are "assert", "command", "request", 
+"answer question". For example the sentance, "Pass the salt.", is an
+illocutionary act.  When a person hears the sentance, the meaning is
+interpreted as a command.  There are also
+[Perlocutionary Acts](http://en.wikipedia.org/wiki/Perlocutionary_act),
+in which signifigance is on the stametment's effect on the hearer's
+actions, thoughts, and beliefs.  An example of this is "persuade" or
+"convince".  Some of these speech acts have been incorporated into the
+language.  So far there is support for:
+
+### Datatypes
+- Commitment
+A commitment is a datatype designated by a *name
+```clojure
+  *bark
+```
+
+### Requests
+- accept.request (accept.request commitment function)
+Accepting a request creates an internal commitment that is evaluated
+at a future time
+```clojure
+  accept.request *dog fn [] :bark ;=> babar.speech_acts.Commitment
+```
+
+### Query
+- answer.query (answer.query
+  request.[fn | completed | value | errors | created) fn)
+```clojure
+   accept.request *dog fn [] :bark
+   answer.query request.value ;=> :bark
+   answer.query request.completed ;=> "2013-05-17T19:58:07.882"
+```
+
 ## REPL
 Launch a REPL
 
