@@ -40,22 +40,17 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-(reset! commitments {})
-
-;(parse "accept.request *raise-temp cat")
-;(parse "accept.request *raise-temp2 cat")
-;(parse "accept.request *raise-temp3 cat")
-;(parse "+ 1 1")
-;@commitments
-
 (defn unfufilled-commitments []
   (into {} (filter (comp nil? :completed val) @commitments)))
 
 (defn fufill-commitment [entry]
-  (let [[k c] entry]
-    (do
-      ((:fn c))
-      [ k (merge c {:completed (gen-timestamp)})])))
+  (try
+    (let [[k c] entry
+         result ((:fn c))]
+      [ k (merge c {:val result :completed (gen-timestamp)})]
+      )
+    (catch Exception e
+      [ (first entry) (merge (last entry) {:errors (.getMessage e)})])))
 
 (defn fufill-commitments []
   (swap! commitments merge
