@@ -132,6 +132,7 @@ language.  So far there is support for:
 ### Datatypes
 - Commitment
 A commitment is a datatype designated by a *name
+
 ```clojure
   *bark
 ```
@@ -140,6 +141,7 @@ A commitment is a datatype designated by a *name
 - accept.request (accept.request commitment function)
 Accepting a request creates an internal commitment that is evaluated
 at a future time
+
 ```clojure
   accept.request *dog fn [] :bark ;=> babar.speech_acts.Commitment
 ```
@@ -147,6 +149,7 @@ at a future time
 ### Query
 - answer.query (answer.query
   request.[fn | completed | value | errors | created) fn)
+
 ```clojure
    accept.request *dog fn [] :bark
    answer.query request.value ;=> :bark
