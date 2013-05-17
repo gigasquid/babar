@@ -116,8 +116,7 @@ clojure. And call them with surrounding parens.
 ## Speech Acts
 According to John Searle's
 [Speech Acts](http://en.wikipedia.org/wiki/Speech_act)
-There are
-[Pllocutionary Acts] (http://en.wikipedia.org/wiki/Illocutionary_act)
+There are [Illocutionary Acts](http://en.wikipedia.org/wiki/Illocutionary_act)
 that involve the pragmatic meaning of a behind a sentence. Some of the
 english verbs denoting these acts are "assert", "command", "request", 
 "answer question". For example the sentance, "Pass the salt.", is an
