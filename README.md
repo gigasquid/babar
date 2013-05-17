@@ -95,7 +95,7 @@ with the typical () or with a shorthand : syntax
   or true false true ;=> true
   or false false false ;=> false
 ```
-- import
+- import (import "ns")
 There is basic support for importing clojure namespaces.
 At this basic level it imports the whole namespace and does require
 :refer :all
@@ -130,7 +130,8 @@ actions, thoughts, and beliefs.  An example of this is "persuade" or
 language.  So far there is support for:
 
 ### Datatypes
-- Commitment
+- Commitment (*name)
+
 A commitment is a datatype designated by a *name
 
 ```clojure
@@ -139,6 +140,7 @@ A commitment is a datatype designated by a *name
 
 ### Requests
 - accept.request (accept.request commitment function)
+
 Accepting a request creates an internal commitment that is evaluated
 at a future time
 
