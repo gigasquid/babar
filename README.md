@@ -152,8 +152,8 @@ at a future time
 
 ```clojure
    accept.request *dog fn [] :bark
-   answer.query request.value ;=> :bark
-   answer.query request.completed ;=> "2013-05-17T19:58:07.882"
+   answer.query request.value *dog ;=> :bark
+   answer.query request.completed * dog ;=> "2013-05-17T19:58:07.882"
 ```
 
 ## REPL
