@@ -13,7 +13,8 @@
   (tformat/unparse built-in-formatter (time/now)))
 
 (defn make-commitment [fn val completed errors]
-  (Commitment. fn val completed (gen-timestamp) errors))
+  (let [cfn (if (vector? fn) (first fn) fn)]
+   (Commitment. cfn val completed (gen-timestamp) errors)))
 
 (defn request [name id expr]
   `((keyword ~id)

@@ -23,5 +23,6 @@
   (parse "answer.query request.value *test") => 1
   (parse "answer.query request.completed *test") => "completed"
   (nil? (parse "answer.query request.created *test")) => false
+  (nil? (parse "answer.query request.fn *test")) => false
   (parse "answer.query request.errors *test") => "error"
   (against-background (before :facts (setup-commitments))))

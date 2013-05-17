@@ -25,7 +25,7 @@
     speech-act = commitment | query | request
     query = 'answer.query' <space> querytype <space> commitment
     querytype = 'request.value' | 'request.details' | 'request.completed' |
-                'request.created' | 'request.errors'
+                'request.created' | 'request.errors' | 'request.fn'
     request = 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*'
                <space> expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
@@ -40,8 +40,34 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+(reset! commitments {})
+
+;(parse "accept.request *raise-temp cat")
+;(parse "accept.request *raise-temp2 cat")
+;(parse "accept.request *raise-temp3 cat")
+;(parse "+ 1 1")
+;@commitments
+
+(defn unfufilled-commitments []
+  (into {} (filter (comp nil? :completed val) @commitments)))
+
+(defn fufill-commitment [entry]
+  (let [[k c] entry]
+    (do
+      ((:fn c))
+      [ k (merge c {:completed (gen-timestamp)})])))
+
+(defn fufill-commitments []
+  (swap! commitments merge
+         (into {} (map fufill-commitment (unfufilled-commitments)))))
+
+(defn babar-eval [expr]
+  (do
+    (fufill-commitments)
+    (eval expr)))
+
 (defn eval-program [expr-list]
-  (let [evaled-list (doall (map eval expr-list))]
+  (let [evaled-list (doall (map babar-eval expr-list))]
     (last evaled-list)))
 
 (def transform-options
