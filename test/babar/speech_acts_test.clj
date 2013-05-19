@@ -10,6 +10,21 @@
   (swap! commitments merge
          {:test (make-commitment (fn [] "test") 1 "completed" "error")}))
 
+(defn reset-beliefs []
+  (reset! beliefs {}))
+
+(defn setup-beliefs []
+  (swap! beliefs merge
+         {:nice-day (make-belief "It is a nice day."(fn [] (= 2 2)))}))
+
+
+(facts "about parsing beliefs"
+  (= babar.speech_acts.Belief (type (parse "#rainy"))) => true
+  (against-background  (before :facts
+                               (swap! beliefs merge
+                                      {:rainy (make-belief "It is rainy out."
+                                                               (fn [] (= 1 1)))}))))
+
 (facts "about parsing commitments"
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true
   (against-background  (before :facts
@@ -22,13 +37,18 @@
   (nil? (:up-temp @commitments)) => false)
 
 
-(facts "about answering queries"
+(facts "about answering queries about requests"
   (parse "answer.query request.value *test") => 1
   (parse "answer.query request.completed *test") => "completed"
   (nil? (parse "answer.query request.created *test")) => false
   (nil? (parse "answer.query request.fn *test")) => false
   (parse "answer.query request.errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
+
+(facts "about answering queries about beliefs"
+  (parse "answer.query belief.str #nice-day") => "It is a nice day."
+  ((parse "answer.query belief.fn #nice-day")) => true
+  (against-background (before :facts (setup-beliefs))))
 
 (facts "about processing commitments"
   (type (parse "accept.request *dog fn [] :bark")) => babar.speech_acts.Commitment

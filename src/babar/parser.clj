@@ -17,18 +17,21 @@
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
+
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
     <item> = command / speech-act / string / number / boolean /
              keyword / bvector / map / identifier
-    speech-act = commitment | query | request
-    query = 'answer.query' <space> querytype <space> commitment
+    speech-act = commitment | belief | query | request
+    query = 'answer.query' <space> querytype <space> (commitment | belief)
     querytype = 'request.value' | 'request.details' | 'request.completed' |
-                'request.created' | 'request.errors' | 'request.fn'
+                'request.created' | 'request.errors' | 'request.fn' |
+                'belief.str' | 'belief.fn'
     request = 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*'
                <space> expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
+    belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
@@ -39,7 +42,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
 
 (defn babar-eval [expr]
   (do
@@ -59,6 +61,7 @@
    :bvector (comp vec list)
    :map hash-map
    :commitment commitment
+   :belief belief
    :request request
    :speech-act identity
    :identifier read-string
