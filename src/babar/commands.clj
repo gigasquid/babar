@@ -33,6 +33,9 @@
 (defn babar-or [v]
   `(reduce #(or %1 %2) ~v))
 
+(defn babar-println [v]
+  `(println (apply str ~v)))
+
 (defn babar-import [v]
   `(require '[~(symbol (first v)) :refer :all]))
 
@@ -51,7 +54,8 @@
     "<" (babar-compare < v)
     "and" (babar-and v)
     "or" (babar-or v)
-    "import" (babar-import v)))
+    "import" (babar-import v)
+    "println" (babar-println v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

@@ -104,6 +104,14 @@ At this basic level it imports the whole namespace and does require
   parse file
 ```
 
+- println (println item & others)
+
+Concatonates the items as a string and prints it out to stdout
+```clojure
+println "cat" ;=> "cat" (returns nil)
+println "cat" " " 1 " " :duck ;=> "cat 1 :duck" (returns nil)
+```
+
 ### Anonymous Functions
 You can create anonymous functions with the fn [x] syntax from
 clojure. And call them with surrounding parens.

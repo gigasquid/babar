@@ -37,13 +37,19 @@
     <operation> =  '+' | '-' | '*' | '/'
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
-                | 'import' | 'fn'
+                | 'import' | 'fn' | 'println'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
+
+(def x 1)
+(parse "println \"Hello\"")
+(println (apply str ["hello"]))
+;(parser "accept.request *up-temp when #sunny fn [] + 1 1")
 
 
 (defn babar-eval [expr]
