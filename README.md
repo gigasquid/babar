@@ -137,6 +137,18 @@ A commitment is a datatype designated by a *name
   *bark
 ```
 
+- Belief (#name)
+
+A belief is a datatype designated by a #name
+
+### Convincing
+
+- be.convinced (be.convinced belief string predicate-function)
+
+To be convinced will create an internal belief that has a human
+readable string as a description and a predicate function that
+evaluates to true when the machine "believes" it.
+
 ### Requests
 - accept.request (accept.request commitment function)
 
@@ -148,8 +160,10 @@ at a future time
 ```
 
 ### Query
-- answer.query (answer.query
-  request.[fn | completed | value | errors | created) fn)
+* answer.query
+
+answer.query request.[fn | completed | value | errors | created] fn)
+answer.query belif.[str | fn ])
 
 ```clojure
    accept.request *dog fn [] :bark
