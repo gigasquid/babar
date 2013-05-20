@@ -19,12 +19,16 @@
 
 (defn make-belief [str fn]
   (let [cfn (if (vector? fn) (first fn) fn)]
-    (Belief. str fn)))
+    (Belief. str cfn)))
 
-(defn accept-belief [id str expr]
+(defn be-convinced [id str expr]
   `((keyword ~id)
     (swap! beliefs merge
-           {(keyword ~id) (make-belief str ~expr)})))
+           {(keyword ~id) (make-belief ~str ~expr)})))
+
+(defn convince [name id str expr]
+  (if (= name "be.convinced")
+    (be-convinced id str expr)))
 
 (defn make-commitment [fn val completed errors]
   (let [cfn (if (vector? fn) (first fn) fn)]

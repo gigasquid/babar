@@ -23,7 +23,13 @@
   (against-background  (before :facts
                                (swap! beliefs merge
                                       {:rainy (make-belief "It is rainy out."
-                                                               (fn [] (= 1 1)))}))))
+                                                           (fn [] (= 1 1)))}))))
+
+(facts "about being convinced of a belief"
+  (type
+   (parse "be.convinced #sunny \"It is sunny\" fn [] = 1 1")) => babar.speech_acts.Belief
+   (parse "answer.query belief.str #sunny") => "It is sunny"
+   ((parse "answer.query belief.fn #sunny")) => true)
 
 (facts "about parsing commitments"
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true

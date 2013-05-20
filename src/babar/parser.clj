@@ -23,13 +23,15 @@
     <space> = <#'[\\s\\t\\n]+'>
     <item> = command / speech-act / string / number / boolean /
              keyword / bvector / map / identifier
-    speech-act = commitment | belief | query | request
+    speech-act = commitment | belief | query | request | convince
     query = 'answer.query' <space> querytype <space> (commitment | belief)
     querytype = 'request.value' | 'request.details' | 'request.completed' |
                 'request.created' | 'request.errors' | 'request.fn' |
                 'belief.str' | 'belief.fn'
     request = 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*'
                <space> expr
+    convince = 'be.convinced' <space> <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
+               <space> string <space> expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
@@ -42,6 +44,7 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (defn babar-eval [expr]
   (do
@@ -63,6 +66,7 @@
    :commitment commitment
    :belief belief
    :request request
+   :convince convince
    :speech-act identity
    :identifier read-string
    :commandkey identity
