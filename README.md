@@ -141,6 +141,10 @@ A commitment is a datatype designated by a *name
 
 A belief is a datatype designated by a #name
 
+```clojure
+  #sunny
+```
+
 ### Convincing
 
 - be.convinced (be.convinced belief string predicate-function)
@@ -148,6 +152,10 @@ A belief is a datatype designated by a #name
 To be convinced will create an internal belief that has a human
 readable string as a description and a predicate function that
 evaluates to true when the machine "believes" it.
+
+```clojure
+   be.convinced #sunny "It is sunny" fn [x] (= 1 1)
+```
 
 ### Requests
 - accept.request (accept.request commitment function)
