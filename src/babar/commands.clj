@@ -39,6 +39,9 @@
 (defn babar-import [v]
   `(require '[~(symbol (first v)) :refer :all]))
 
+(defn babar-deref [item]
+  `@~item)
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)

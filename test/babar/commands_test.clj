@@ -65,3 +65,7 @@
 (facts "about println"
   (parse "println \"cat\"") => nil
   (parse "println 1 2 3") => nil )
+
+(def bird (atom 5))
+(facts "about derefering clojure atoms"
+  (parse "@bird") => 5)

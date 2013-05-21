@@ -3,6 +3,8 @@
             [babar.parser :refer :all]
             [babar.speech-acts :refer :all]))
 
+(init-commitments)
+
 (defn reset-commitments []
   (reset! commitments {}))
 
@@ -61,6 +63,7 @@
 
 (facts "about processing commitments"
   (type (parse "accept.request *dog fn [] :bark")) => babar.speech_acts.Commitment
+  (Thread/sleep 30)
   (parse "answer.query request.value *dog") => :bark
   (nil? (parse "answer.query request.completed *dog")) => false
   (against-background (before :facts (reset-commitments))))
@@ -72,7 +75,8 @@
   (type (parse "answer.query request.when *lower-temp")) => babar.speech_acts.Belief
   (parse "answer.query request.completed *lower-temp") => nil
   (parse "answer.query request.value *lower-temp") => nil
-  (parse "def temperature 75")
+  (parse "def temperature 75") => anything
+  (Thread/sleep 30)
   (parse "answer.query request.value *lower-temp") => :lower-the-temp-action
   (nil? (parse "answer.query request.completed *lower-temp")) => false
   (against-background (before :facts (reset-commitments))))

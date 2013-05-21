@@ -20,11 +20,10 @@
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
-
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / speech-act / string / number / boolean /
+    <item> = command / speech-act / deref / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince
     query = 'answer.query' <space> querytype <space> (commitment | belief)
@@ -39,6 +38,7 @@
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
+    deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
                 | 'import' | 'fn' | 'println'
@@ -48,6 +48,7 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (defn babar-eval [expr]
   (eval expr))
@@ -69,6 +70,7 @@
    :svector (comp vec list)
    :bvector (comp vec list)
    :map hash-map
+   :deref babar-deref
    :commitment commitment
    :belief belief
    :request request
