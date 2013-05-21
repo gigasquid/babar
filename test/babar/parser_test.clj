@@ -14,5 +14,3 @@
 (facts "about ignorning newline as whitespace in expression"
   (parse "(+ 1\n 3)") => 4
   (parse "+ 1\n 3") => 4)
-
-

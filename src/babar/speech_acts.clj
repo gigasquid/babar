@@ -5,7 +5,7 @@
 (def commitments (atom {}))
 (def beliefs (atom {}))
 
-(defrecord Commitment [fn val completed created errors])
+(defrecord Commitment [fn val completed created errors when])
 (defrecord Belief [str fn])
 
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
@@ -30,14 +30,24 @@
   (if (= name "be.convinced")
     (be-convinced id str expr)))
 
-(defn make-commitment [fn val completed errors]
+(defn make-commitment [fn val completed errors when]
   (let [cfn (if (vector? fn) (first fn) fn)]
-   (Commitment. cfn val completed (gen-timestamp) errors)))
+   (Commitment. cfn val completed (gen-timestamp) errors when)))
 
-(defn request [name id expr]
+
+(defn request-plain [name id expr]
   `((keyword ~id)
     (swap! commitments merge
-           {(keyword ~id) (make-commitment ~expr nil nil nil)})))
+           {(keyword ~id) (make-commitment ~expr nil nil nil nil)})))
+
+(defn request-when [name id when expr]
+  `((keyword ~id)
+    (swap! commitments merge
+           {(keyword ~id) (make-commitment ~expr nil nil nil ~when)})))
+
+(defn request
+  ([name id expr] (request-plain name id expr))
+  ([name id when expr] (request-when name id when expr)))
 
 (defn commitment [name]
   `((keyword ~name) @commitments))
@@ -53,11 +63,17 @@
       "request.completed" (commitment-belief-query c :completed)
       "request.created" (commitment-belief-query c :created)
       "request.errors" (commitment-belief-query c :errors)
+      "request.when" (commitment-belief-query c :when)
       "belief.str" (commitment-belief-query c :str)
       "belief.fn" (commitment-belief-query c :fn))))
 
+(defn need-to-fufill-commitment? [c]
+  (let [not-complete (nil? (:completed (val c)))
+        when-pred (:when (val c))]
+    (and not-complete (if when-pred ((:fn when-pred)) true))))
+
 (defn unfufilled-commitments []
-  (into {} (filter (comp nil? :completed val) @commitments)))
+  (into {} (filter need-to-fufill-commitment? @commitments)))
 
 (defn fufill-commitment [entry]
   (try

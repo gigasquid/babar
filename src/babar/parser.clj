@@ -27,9 +27,10 @@
     query = 'answer.query' <space> querytype <space> (commitment | belief)
     querytype = 'request.value' | 'request.details' | 'request.completed' |
                 'request.created' | 'request.errors' | 'request.fn' |
-                'belief.str' | 'belief.fn'
-    request = 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*'
-               <space> expr
+                'request.when' | 'belief.str' | 'belief.fn'
+    request =   'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space>
+                   <'when'> <space> belief  expr  /
+                'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space> expr
     convince = 'be.convinced' <space> <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                <space> string <space> expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
@@ -44,12 +45,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
-
-(def x 1)
-(parse "println \"Hello\"")
-(println (apply str ["hello"]))
-;(parser "accept.request *up-temp when #sunny fn [] + 1 1")
 
 
 (defn babar-eval [expr]

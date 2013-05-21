@@ -8,7 +8,9 @@
 
 (defn setup-commitments []
   (swap! commitments merge
-         {:test (make-commitment (fn [] "test") 1 "completed" "error")}))
+         {:test (make-commitment (fn [] "test") 1 "completed" "error"
+                                 (make-belief "Everything is fine" (fn [] (= 1 1))))}))
+
 
 (defn reset-beliefs []
   (reset! beliefs {}))
@@ -35,7 +37,7 @@
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true
   (against-background  (before :facts
                                (swap! commitments merge
-                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil)}))))
+                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil nil)}))))
 
 
 (facts "about accepting requests"
@@ -48,6 +50,7 @@
   (parse "answer.query request.completed *test") => "completed"
   (nil? (parse "answer.query request.created *test")) => false
   (nil? (parse "answer.query request.fn *test")) => false
+  (nil? (parse "answer.query request.when *test")) => false
   (parse "answer.query request.errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 
@@ -60,6 +63,15 @@
   (type (parse "accept.request *dog fn [] :bark")) => babar.speech_acts.Commitment
   (parse "answer.query request.value *dog") => :bark
   (nil? (parse "answer.query request.completed *dog")) => false
+  (against-background (before :facts (reset-commitments))))
+
+(facts "about processing commitments with when"
+  (parse "def temperature 65")
+  (parse "be.convinced #too-warm \"It is too warm.\" fn [] > temperature 70")
+  (parse "accept.request *lower-temp when #too-warm fn [] :lower-the-temp-action")
+  (type (parse "answer.query request.when *lower-temp")) => babar.speech_acts.Belief
+  (parse "answer.query request.completed *lower-temp") => nil
+  (parse "answer.query request.value *lower-temp") => nil
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing multiple commitments"
