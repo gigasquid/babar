@@ -1,13 +1,16 @@
 (ns babar.parser
   (:require [instaparse.core :as insta]
+            [clojure.java.io :as io]
             [babar.commands :refer :all]
             [babar.speech-acts :refer :all]))
 
+(declare parse)
+
 (def parser
   (insta/parser
-   "program =   (expr (<'\n'>))+ expr |
-                (expr (<';'>) space)+ expr | expr
-    expr = item | command | vector | functioncall
+   "program =   expr
+    expr = item | command | vector | functioncall | readprogram
+    readprogram = <'read'> space string
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
@@ -46,15 +49,20 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-
 (defn babar-eval [expr]
-  (do
-    (fufill-commitments)
-    (eval expr)))
+  (let [result (eval expr)]
+    (do
+      (fufill-commitments)
+      result)))
 
 (defn eval-program [expr-list]
   (let [evaled-list (doall (map babar-eval expr-list))]
     (last evaled-list)))
+
+(defn read-program [filename]
+  (with-open [rdr (io/reader filename)]
+  (doseq [line (line-seq rdr)]
+    (parse line))))
 
 (def transform-options
   {:number read-string
@@ -76,6 +84,7 @@
    :expr identity
    :querytype identity
    :query query
+   :readprogram read-program
    :program (comp eval-program list)})
 
 (defn parse [input]

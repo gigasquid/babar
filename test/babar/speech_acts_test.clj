@@ -72,6 +72,9 @@
   (type (parse "answer.query request.when *lower-temp")) => babar.speech_acts.Belief
   (parse "answer.query request.completed *lower-temp") => nil
   (parse "answer.query request.value *lower-temp") => nil
+  (parse "def temperature 75")
+  (parse "answer.query request.value *lower-temp") => :lower-the-temp-action
+  (nil? (parse "answer.query request.completed *lower-temp")) => false
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing multiple commitments"
