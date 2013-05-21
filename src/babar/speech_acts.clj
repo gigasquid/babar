@@ -4,6 +4,7 @@
 
 (def commitments (atom {}))
 (def beliefs (atom {}))
+(def commitments-agent (agent {}))
 
 (defrecord Commitment [fn val completed created errors when])
 (defrecord Belief [str fn])
@@ -84,6 +85,12 @@
     (catch Exception e
       [ (first entry) (merge (last entry) {:errors (.getMessage e)})])))
 
-(defn fufill-commitments []
-  (swap! commitments merge
-         (into {} (map fufill-commitment (unfufilled-commitments)))))
+(defn fufill-commitments [_]
+  (do
+   (swap! commitments merge
+          (into {} (map fufill-commitment (unfufilled-commitments))))
+   (Thread/sleep 15)
+   (recur nil)))
+
+(defn init-commitments []
+  (send commitments-agent fufill-commitments))

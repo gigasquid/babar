@@ -27,9 +27,9 @@
 
 
 (defn -main [& args]
+  (parser/init)
   (println "Hello Babar!")
   (println "===============")
   (flush)
   (repl))
-
 

@@ -50,10 +50,7 @@
     <integer> = #'-?[0-9]+'"))
 
 (defn babar-eval [expr]
-  (let [result (eval expr)]
-    (do
-      (fufill-commitments)
-      result)))
+  (eval expr))
 
 (defn eval-program [expr-list]
   (let [evaled-list (doall (map babar-eval expr-list))]
@@ -89,3 +86,7 @@
 
 (defn parse [input]
   (->> (parser input) (insta/transform transform-options)))
+
+(defn init []
+  (init-commitments))
+
