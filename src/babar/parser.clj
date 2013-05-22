@@ -14,16 +14,17 @@
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
     commandkey = operation | special
-    functioncall =  <'('> (space)* identifier (space)* ?[vector] (space)* <')'> |
-                    identifier <':'> ?[vector] |
-                    <'('> (space)* command (space)* ?[vector] (space)* <')'>
+    functioncall =  <'('> item  <')'> /
+                    <'('> item space vector <')'> /
+                    item <':'> space vector /
+                    item <':'>
     map = <'{'> ((space)* item (space)*)+ <'}'>
     <vector>  = svector | bvector
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
     <space> = <#'[\\s\\t\\n]+'>
-    <item> = command / speech-act / deref / string / number / boolean /
+    <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince
     query = 'answer.query' <space> querytype <space> (commitment | belief)
@@ -41,14 +42,13 @@
     deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
-                | 'import' | 'fn' | 'println'
+                | 'import' | 'fn' | 'println' | 'get'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
 
 (defn babar-eval [expr]
   (eval expr))

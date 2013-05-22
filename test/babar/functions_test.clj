@@ -25,6 +25,6 @@
 (facts "about anonymous functions"
   ((parse "fn [x] (+ x 1)") 3) => 4
   (parse "((fn [x] + x 1) 3)")  => 4
-  (parse "((fn [x y z] + x y z) [1 2 3])") => 6
+  (parse "((fn [x y z] (+ x y z)) 1 2 3)") => 6
   (parse "((fn [] [4 5 6]))") => [4 5 6])
 

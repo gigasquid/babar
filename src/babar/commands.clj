@@ -42,6 +42,9 @@
 (defn babar-deref [item]
   `@~item)
 
+(defn babar-get [v]
+  `(get (first ~v) (second ~v)))
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)
@@ -58,7 +61,8 @@
     "and" (babar-and v)
     "or" (babar-or v)
     "import" (babar-import v)
-    "println" (babar-println v)))
+    "println" (babar-println v)
+    "get" (babar-get v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

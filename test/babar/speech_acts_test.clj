@@ -43,7 +43,7 @@
 
 
 (facts "about accepting requests"
-  (type (parse "accept.request *up-temp fn [x] (+ x 1)")) => babar.speech_acts.Commitment
+  (type (parse "accept.request *up-temp fn [] (+ 3 1)")) => babar.speech_acts.Commitment
   (nil? (:up-temp @commitments)) => false)
 
 
