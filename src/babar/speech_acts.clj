@@ -56,7 +56,10 @@
 (defn commitment-belief-query [c key]
   `(~key ~c))
 
-(defn query [name type c]
+(defn all-commitments-beliefs [a]
+  (vec (keys @a)))
+
+(defn query [name type & [c]]
   (when (= name "answer.query")
     (case type
       "request.value" (commitment-belief-query c :val)
@@ -65,8 +68,10 @@
       "request.created" (commitment-belief-query c :created)
       "request.errors" (commitment-belief-query c :errors)
       "request.when" (commitment-belief-query c :when)
+      "requests.all" (all-commitments-beliefs commitments)
       "belief.str" (commitment-belief-query c :str)
-      "belief.fn" (commitment-belief-query c :fn))))
+      "belief.fn" (commitment-belief-query c :fn)
+      "beliefs.all" (all-commitments-beliefs beliefs))))
 
 (defn need-to-fufill-commitment? [c]
   (let [not-complete (nil? (:completed (val c)))

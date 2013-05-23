@@ -27,10 +27,12 @@
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince
-    query = 'answer.query' <space> querytype <space> (commitment | belief)
+    query = 'answer.query' <space> querytype <space> (commitment | belief) /
+            'answer.query' <space> querytype
     querytype = 'request.value' | 'request.details' | 'request.completed' |
                 'request.created' | 'request.errors' | 'request.fn' |
-                'request.when' | 'belief.str' | 'belief.fn'
+                'request.when' | 'belief.str' | 'belief.fn' |
+                'requests.all' | 'beliefs.all'
     request =   'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space>
                    <'when'> <space> belief  expr  /
                 'accept.request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space> expr

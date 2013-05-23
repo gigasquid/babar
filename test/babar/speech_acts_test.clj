@@ -56,10 +56,22 @@
   (parse "answer.query request.errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 
+(facts "about answering query about all requests"
+  (parse "accept.request *up-temp fn [] (+ 3 1)") => anything
+  (parse "accept.request *down-temp fn [] (- 3 1)") => anything
+  (parse "answer.query requests.all") => (contains[:up-temp :down-temp] :in-any-order)
+  (against-background (before :facts (reset-commitments))))
+
 (facts "about answering queries about beliefs"
   (parse "answer.query belief.str #nice-day") => "It is a nice day."
   ((parse "answer.query belief.fn #nice-day")) => true
   (against-background (before :facts (setup-beliefs))))
+
+(facts "about answer query about all beliefs"
+  (parse "be.convinced #sunny \"It is sunny\" fn [] = 1 1")
+  (parse "be.convinced #cloudy \"It is cloudy\" fn [] = 1 3")
+  (parse "answer.query beliefs.all") => (contains [:sunny :cloudy] :in-any-order)
+  (against-background (before :facts (reset-beliefs))))
 
 (facts "about processing commitments"
   (type (parse "accept.request *dog fn [] :bark")) => babar.speech_acts.Commitment
