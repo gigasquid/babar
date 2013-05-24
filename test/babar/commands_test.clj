@@ -66,6 +66,11 @@
   (parse "println \"cat\"") => nil
   (parse "println 1 2 3") => nil )
 
+(facts "about do"
+  (parse "do (def s1 1) (def s2 2)") => anything
+  (parse "s1") => 1
+  (parse "s2") => 2)
+
 (def bird (atom 5))
 (facts "about derefering clojure atoms"
   (parse "@bird") => 5)
