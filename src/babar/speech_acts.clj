@@ -28,7 +28,7 @@
            {(keyword ~id) (make-belief ~str ~expr)})))
 
 (defn convince [name id str expr]
-  (if (= name "be.convinced")
+  (if (= name "convince")
     (be-convinced id str expr)))
 
 (defn make-commitment [fn val completed errors when]
@@ -60,18 +60,18 @@
   (vec (keys @a)))
 
 (defn query [name type & [c]]
-  (when (= name "answer.query")
+  (when (= name "answer")
     (case type
-      "request.value" (commitment-belief-query c :val)
-      "request.fn" (commitment-belief-query c :fn)
-      "request.completed" (commitment-belief-query c :completed)
-      "request.created" (commitment-belief-query c :created)
-      "request.errors" (commitment-belief-query c :errors)
-      "request.when" (commitment-belief-query c :when)
-      "requests.all" (all-commitments-beliefs commitments)
-      "belief.str" (commitment-belief-query c :str)
-      "belief.fn" (commitment-belief-query c :fn)
-      "beliefs.all" (all-commitments-beliefs beliefs))))
+      "request-value" (commitment-belief-query c :val)
+      "request-fn" (commitment-belief-query c :fn)
+      "request-completed" (commitment-belief-query c :completed)
+      "request-created" (commitment-belief-query c :created)
+      "request-errors" (commitment-belief-query c :errors)
+      "request-when" (commitment-belief-query c :when)
+      "requests-all" (all-commitments-beliefs commitments)
+      "belief-str" (commitment-belief-query c :str)
+      "belief-fn" (commitment-belief-query c :fn)
+      "beliefs-all" (all-commitments-beliefs beliefs))))
 
 (defn need-to-fufill-commitment? [c]
   (let [not-complete (nil? (:completed (val c)))
