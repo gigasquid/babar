@@ -10,5 +10,5 @@
   (parse "+ 1\n 3") => 4)
 
 (facts "about reading babar files"
-  (parse "read \"simple.babar\"") => nil
+  (parse "read \"simple.babar\"") => anything
   (parse "c")  => [:a :b 11])

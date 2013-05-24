@@ -8,8 +8,8 @@
 
 (def parser
   (insta/parser
-   "program =   expr / (expr <'.'>)+
-    expr = item | command | vector | functioncall | readprogram
+   "program =   (expr / vector) / (expr <'.'> space)+
+    expr = item | command | functioncall | readprogram
     readprogram = <'read'> space string
     command = commandkey space vector |
                <'('> (space)* commandkey space vector (space)* <')'>
@@ -36,7 +36,7 @@
                 'request-when' | 'belief-str' | 'belief-fn' |
                 'requests-all' | 'beliefs-all'
     request =   'request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space>
-                   <'when'> <space> belief  expr  /
+                   <'when'> <space> belief <space> expr  /
                 'request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space> expr
     convince = 'convince' <space> <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                <space> string <space> expr
@@ -54,6 +54,7 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+
 (defn babar-eval [expr]
   (eval expr))
 
@@ -62,9 +63,7 @@
     (last evaled-list)))
 
 (defn read-program [filename]
-  (with-open [rdr (io/reader filename)]
-  (doseq [line (line-seq rdr)]
-    (parse line))))
+  `(parse (slurp ~filename)))
 
 (def transform-options
   {:number read-string
