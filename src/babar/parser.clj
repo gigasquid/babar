@@ -27,7 +27,8 @@
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince | assertion
-    assertion = 'assert' space identifier space item
+    assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
+                <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'answer' <space> querytype <space> (commitment | belief) /
             'answer' <space> querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
@@ -43,7 +44,7 @@
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
     deref = <'@'> identifier
-    identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*' !special
+    identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*'
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
                 | 'import' | 'fn' | 'println' | 'get'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
@@ -52,8 +53,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
-;(parser "assert a 1")
 
 (defn babar-eval [expr]
   (eval expr))
@@ -76,6 +75,7 @@
    :bvector (comp vec list)
    :map hash-map
    :deref babar-deref
+   :assertion babar-assert
    :commitment commitment
    :belief belief
    :request request

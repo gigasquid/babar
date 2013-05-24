@@ -73,6 +73,12 @@
   (parse "answer beliefs-all") => (contains [:sunny :cloudy] :in-any-order)
   (against-background (before :facts (reset-beliefs))))
 
+(facts "about assertions"
+  (parse "assert apple 1") => anything
+  (parse "apple") => 1
+  (parse "assert apple-pie [x] + x 1")
+  (parse "(apple-pie 3)") => 4)
+
 (facts "about processing commitments"
   (type (parse "request *dog fn [] :bark")) => babar.speech_acts.Commitment
   (Thread/sleep 30)

@@ -1,6 +1,7 @@
 (ns babar.speech-acts
   (:require [clj-time.core :as time]
-            [clj-time.format :as tformat]))
+            [clj-time.format :as tformat]
+            [babar.commands :refer :all]))
 
 (def commitments (atom {}))
 (def beliefs (atom {}))
@@ -72,6 +73,10 @@
       "belief-str" (commitment-belief-query c :str)
       "belief-fn" (commitment-belief-query c :fn)
       "beliefs-all" (all-commitments-beliefs beliefs))))
+
+
+(defn babar-assert ([id val] (babar-def (list (symbol id) val)))
+  ([id params form] (babar-defn (list (symbol id) params form))))
 
 (defn need-to-fufill-commitment? [c]
   (let [not-complete (nil? (:completed (val c)))
