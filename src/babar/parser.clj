@@ -29,17 +29,17 @@
     speech-act = commitment | belief | query | request | convince | assertion
     assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
                 <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
-    query = 'answer' <space> querytype <space> (commitment | belief) /
-            'answer' <space> querytype
+    query = 'answer' space querytype space (commitment | belief) /
+            'answer' space querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
                 'request-when' | 'belief-str' | 'belief-fn' |
                 'requests-all' | 'beliefs-all'
-    request =   'request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space>
-                   <'when'> <space> belief <space> expr  /
-                'request' <space> <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' <space> expr
-    convince = 'convince' <space> <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
-               <space> string <space> expr
+    request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
+                   <'when'> space belief space expr  /
+                'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr
+    convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
+               space string space expr
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
@@ -54,6 +54,8 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+
+(parser (slurp "fly.babar"))
 
 (defn babar-eval [expr]
   (eval expr))

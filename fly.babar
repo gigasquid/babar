@@ -1,8 +1,8 @@
-import "clj-drone.core"
-import "clj-drone.navdata"
-defn get-navdata [key] get @nav-data key
-defn navdata-equal [key val] = (get-navdata key) val
+import "clj-drone.core".
+import "clj-drone.navdata".
+assert get-navdata [key] get @nav-data key.
+assert navdata-equal [key val] = (get-navdata key) val.
 
-be.convinced #landed "I am landed" fn [] (navdata-equal :control-state :landed)
-accept.request *take-off when #landed fn [] (drone :take-off)
+convince #landed "I am landed" fn [] (navdata-equal :control-state :landed).
+request *take-off when #landed fn [] (drone :take-off).
 
