@@ -33,7 +33,7 @@
             'query' space querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
-                'request-when' | 'belief-str' | 'belief-fn' |
+                'request-when' | 'request-is-done' | 'belief-str' | 'belief-fn' |
                 'requests-all' | 'beliefs-all'
     request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                    <'when'> space belief space expr  /
@@ -55,6 +55,7 @@
     <integer> = #'-?[0-9]+'"))
 
 ;(parse "request *init fn [] do (drone-initialize) (sleep 10)")
+                                        ;(parse "query request-is-done *init")
 
 
 (defn babar-eval [expr]

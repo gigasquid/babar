@@ -105,15 +105,19 @@
   (type (parse "request *horse fn [] :neigh")) => babar.speech_acts.Commitment
   (parse "query request-value *cat") => :meow
   (nil? (parse "query request-completed *cat")) => false
+  (parse "query request-is-done *cat") => true
   (parse "query request-value *bird") => :tweet
   (nil? (parse "query request-completed *bird")) => false
+  (parse "query request-is-done *bird") => true
   (parse "query request-value *horse") => :neigh
   (nil? (parse "query request-completed *horse")) => false
+  (parse "query request-is-done *horse") => true
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing commitment with an error"
   (type (parse "request *cat fn [] / 0 0")) => babar.speech_acts.Commitment
   (parse "query request-completed *cat") => nil
+  (parse "query request-is-done *cat") => false
   (parse "query request-value *cat") => nil
   (parse "query request-errors *cat") => "Divide by zero"
   (against-background (before :facts (reset-commitments))))

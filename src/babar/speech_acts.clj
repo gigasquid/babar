@@ -57,6 +57,9 @@
 (defn commitment-belief-query [c key]
   `(~key ~c))
 
+(defn commitment-is-done [c]
+  `(not (nil? (:completed ~c))))
+
 (defn all-commitments-beliefs [a]
   (vec (keys @a)))
 
@@ -66,6 +69,7 @@
       "request-value" (commitment-belief-query c :val)
       "request-fn" (commitment-belief-query c :fn)
       "request-completed" (commitment-belief-query c :completed)
+      "request-is-done" (commitment-is-done c)
       "request-created" (commitment-belief-query c :created)
       "request-errors" (commitment-belief-query c :errors)
       "request-when" (commitment-belief-query c :when)
