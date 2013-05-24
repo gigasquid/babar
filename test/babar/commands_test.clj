@@ -74,3 +74,6 @@
 (def bird (atom 5))
 (facts "about derefering clojure atoms"
   (parse "@bird") => 5)
+
+(facts "about sleep"
+  (parse "sleep 5") => anything)

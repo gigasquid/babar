@@ -29,8 +29,8 @@
     speech-act = commitment | belief | query | request | convince | assertion
     assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
                 <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
-    query = 'answer' space querytype space (commitment | belief) /
-            'answer' space querytype
+    query = 'query' space querytype space (commitment | belief) /
+            'query' space querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
                 'request-when' | 'belief-str' | 'belief-fn' |
@@ -46,13 +46,15 @@
     deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*'
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
-                | 'import' | 'fn' | 'println' | 'get' | 'do'
+                | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
+;(parse "request *init fn [] do (drone-initialize) (sleep 10)")
 
 
 (defn babar-eval [expr]

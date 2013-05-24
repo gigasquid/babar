@@ -61,7 +61,7 @@
   (vec (keys @a)))
 
 (defn query [name type & [c]]
-  (when (= name "answer")
+  (when (= name "query")
     (case type
       "request-value" (commitment-belief-query c :val)
       "request-fn" (commitment-belief-query c :fn)

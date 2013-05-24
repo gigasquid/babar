@@ -48,6 +48,9 @@
 (defn babar-do [v]
   `(do ~v))
 
+(defn babar-sleep [v]
+  `(Thread/sleep (first ~v)))
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)
@@ -66,7 +69,8 @@
     "import" (babar-import v)
     "println" (babar-println v)
     "get" (babar-get v)
-    "do" (babar-do v)))
+    "do" (babar-do v)
+    "sleep" (babar-sleep v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

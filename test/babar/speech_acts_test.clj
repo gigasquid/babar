@@ -32,8 +32,8 @@
 (facts "about being convinced of a belief"
   (type
    (parse "convince #sunny \"It is sunny\" fn [] = 1 1")) => babar.speech_acts.Belief
-   (parse "answer belief-str #sunny") => "It is sunny"
-   ((parse "answer belief-fn #sunny")) => true)
+   (parse "query belief-str #sunny") => "It is sunny"
+   ((parse "query belief-fn #sunny")) => true)
 
 (facts "about parsing commitments"
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true
@@ -47,30 +47,30 @@
   (nil? (:up-temp @commitments)) => false)
 
 
-(facts "about answering queries about requests"
-  (parse "answer request-value *test") => 1
-  (parse "answer request-completed *test") => "completed"
-  (nil? (parse "answer request-created *test")) => false
-  (nil? (parse "answer request-fn *test")) => false
-  (nil? (parse "answer request-when *test")) => false
-  (parse "answer request-errors *test") => "error"
+(facts "about querying queries about requests"
+  (parse "query request-value *test") => 1
+  (parse "query request-completed *test") => "completed"
+  (nil? (parse "query request-created *test")) => false
+  (nil? (parse "query request-fn *test")) => false
+  (nil? (parse "query request-when *test")) => false
+  (parse "query request-errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 
-(facts "about answering query about all requests"
+(facts "about querying query about all requests"
   (parse "request *up-temp fn [] (+ 3 1)") => anything
   (parse "request *down-temp fn [] (- 3 1)") => anything
-  (parse "answer requests-all") => (contains[:up-temp :down-temp] :in-any-order)
+  (parse "query requests-all") => (contains[:up-temp :down-temp] :in-any-order)
   (against-background (before :facts (reset-commitments))))
 
-(facts "about answering queries about beliefs"
-  (parse "answer belief-str #nice-day") => "It is a nice day."
-  ((parse "answer belief-fn #nice-day")) => true
+(facts "about querying queries about beliefs"
+  (parse "query belief-str #nice-day") => "It is a nice day."
+  ((parse "query belief-fn #nice-day")) => true
   (against-background (before :facts (setup-beliefs))))
 
-(facts "about answer query about all beliefs"
+(facts "about query query about all beliefs"
   (parse "convince #sunny \"It is sunny\" fn [] = 1 1")
   (parse "convince #cloudy \"It is cloudy\" fn [] = 1 3")
-  (parse "answer beliefs-all") => (contains [:sunny :cloudy] :in-any-order)
+  (parse "query beliefs-all") => (contains [:sunny :cloudy] :in-any-order)
   (against-background (before :facts (reset-beliefs))))
 
 (facts "about assertions"
@@ -82,38 +82,38 @@
 (facts "about processing commitments"
   (type (parse "request *dog fn [] :bark")) => babar.speech_acts.Commitment
   (Thread/sleep 30)
-  (parse "answer request-value *dog") => :bark
-  (nil? (parse "answer request-completed *dog")) => false
+  (parse "query request-value *dog") => :bark
+  (nil? (parse "query request-completed *dog")) => false
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing commitments with when"
   (parse "def temperature 65")
   (parse "convince #too-warm \"It is too warm.\" fn [] > temperature 70")
   (parse "request *lower-temp when #too-warm fn [] :lower-the-temp-action")
-  (type (parse "answer request-when *lower-temp")) => babar.speech_acts.Belief
-  (parse "answer request-completed *lower-temp") => nil
-  (parse "answer request-value *lower-temp") => nil
+  (type (parse "query request-when *lower-temp")) => babar.speech_acts.Belief
+  (parse "query request-completed *lower-temp") => nil
+  (parse "query request-value *lower-temp") => nil
   (parse "def temperature 75") => anything
   (Thread/sleep 30)
-  (parse "answer request-value *lower-temp") => :lower-the-temp-action
-  (nil? (parse "answer request-completed *lower-temp")) => false
+  (parse "query request-value *lower-temp") => :lower-the-temp-action
+  (nil? (parse "query request-completed *lower-temp")) => false
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing multiple commitments"
   (type (parse "request *cat fn [] :meow")) => babar.speech_acts.Commitment
   (type (parse "request *bird fn [] :tweet")) => babar.speech_acts.Commitment
   (type (parse "request *horse fn [] :neigh")) => babar.speech_acts.Commitment
-  (parse "answer request-value *cat") => :meow
-  (nil? (parse "answer request-completed *cat")) => false
-  (parse "answer request-value *bird") => :tweet
-  (nil? (parse "answer request-completed *bird")) => false
-  (parse "answer request-value *horse") => :neigh
-  (nil? (parse "answer request-completed *horse")) => false
+  (parse "query request-value *cat") => :meow
+  (nil? (parse "query request-completed *cat")) => false
+  (parse "query request-value *bird") => :tweet
+  (nil? (parse "query request-completed *bird")) => false
+  (parse "query request-value *horse") => :neigh
+  (nil? (parse "query request-completed *horse")) => false
   (against-background (before :facts (reset-commitments))))
 
 (facts "about processing commitment with an error"
   (type (parse "request *cat fn [] / 0 0")) => babar.speech_acts.Commitment
-  (parse "answer request-completed *cat") => nil
-  (parse "answer request-value *cat") => nil
-  (parse "answer request-errors *cat") => "Divide by zero"
+  (parse "query request-completed *cat") => nil
+  (parse "query request-value *cat") => nil
+  (parse "query request-errors *cat") => "Divide by zero"
   (against-background (before :facts (reset-commitments))))
