@@ -138,7 +138,7 @@
    (swap! commitments merge
           (into {} (map fufill-commitment (unfufilled-commitments))
                 ))
-   (Thread/sleep 10)
+   (Thread/sleep 5)
    (recur nil)))
 
 (defn init-commitments []

@@ -1,14 +1,18 @@
+speak-beliefs true.
 import "clj-drone.core".
 import "clj-drone.navdata".
 
 assert get-navdata [key] get @nav-data key.
 assert navdata-equal [key val] = (get-navdata key) val.
+assert navdata-gt [key val] > (get-navdata key) val.
 assert init-drone [] (drone-initialize).
 assert init-nav [] (drone-init-navdata).
 
-convince #landed "I am landed" fn [] (navdata-equal :control-state :landed).
-convince #flying "I am flying" fn [] (navdata-equal :control-state :hovering).
+convince #landed "I am on the ground" fn [] (navdata-equal :control-state :landed).
+convince #flying "I am flying" fn [] or (navdata-equal :control-state :flying)
+                                        (navdata-equal :control-state :hovering).
+convince #high-enough "I am high enough" fn [] (navdata-gt :altitude 1.5).
 
 request *take-off when #landed fn [] (drone :take-off).
-request *land when #flying fn [] (drone :land).
-
+request *cruising-alt when #flying until #high-enough fn [] (drone :up 0.5).
+request *land when #high-enough fn [] (drone :land).
