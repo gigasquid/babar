@@ -9,7 +9,6 @@ assert init-nav [] (drone-init-navdata).
 convince #landed "I am landed" fn [] (navdata-equal :control-state :landed).
 convince #flying "I am flying" fn [] (navdata-equal :control-state :hovering).
 
-
 request *take-off when #landed fn [] (drone :take-off).
 request *land when #flying fn [] (drone :land).
 

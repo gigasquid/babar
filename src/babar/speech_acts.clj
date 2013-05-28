@@ -50,22 +50,18 @@
     (swap! commitments merge
            {(keyword ~id) (make-commitment ~expr nil nil nil nil nil)})))
 
-(defn request-when [name id when expr]
+(defn request-when-until [name id when until expr]
   `((keyword ~id)
     (swap! commitments merge
-           {(keyword ~id) (make-commitment ~expr nil nil nil ~when nil)})))
-
-(defn request-until [name id until expr]
-  `((keyword ~id)
-    (swap! commitments merge
-           {(keyword ~id) (make-commitment ~expr nil nil nil nil ~until)})))
-
+           {(keyword ~id) (make-commitment ~expr nil nil nil ~when ~until)})))
 
 (defn request
   ([name id expr] (request-plain name id expr))
   ([name id type belief expr] (case type
-                                "when" (request-when name id belief expr)
-                                "until" (request-until name id belief expr))))
+                                "when" (request-when-until name id belief nil expr)
+                                "until" (request-when-until name id nil belief expr)))
+  ([name id when when-belief until until-belief expr]
+     (request-when-until name id when-belief until-belief expr)))
 
 (defn commitment [name]
   `((keyword ~name) @commitments))

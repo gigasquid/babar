@@ -113,6 +113,22 @@
   (nil?(parse "query request-completed *raise-temp")) => false
   (against-background (before :facts (reset! temp 69))))
 
+(facts "about processing commitments with when and until"
+  (parse "convince #just-right \"It is just-right\" fn [] > @temp 70") => anything
+  (parse "convince #start \"Time to start\" fn [] > @temp 68") => anything
+  (parse "request *raise-temp when #start until #just-right fn [] (increase-temp)") => anything
+  (Thread/sleep 60)
+  (parse "query request-is-done *raise-temp") => false
+  (parse "query request-value *raise-temp")   => nil
+  (nil? (parse "query request-completed *raise-temp")) => true
+  (reset! temp 69) => anything
+  (Thread/sleep 60)
+  (parse "query request-is-done *raise-temp") => true
+  (parse "query request-value *raise-temp")   => 71
+  (nil? (parse "query request-completed *raise-temp")) => false
+  (against-background (before :facts (reset! temp 65))))
+
+
 (facts "about processing multiple commitments"
   (type (parse "request *cat fn [] :meow")) => babar.speech_acts.Commitment
   (type (parse "request *bird fn [] :tweet")) => babar.speech_acts.Commitment
@@ -140,6 +156,7 @@
 (facts "about processing commitment with a when error"
   (type (parse "convince #bad \"This is really bad.\" fn [] / 0 0")) => babar.speech_acts.Belief
   (type (parse "request *cat when #bad fn [] + 1 1")) => babar.speech_acts.Commitment
+  (Thread/sleep 30) => anything
   (parse "query request-completed *cat") => nil
   (parse "query request-is-done *cat") => false
   (parse "query request-value *cat") => nil
@@ -153,7 +170,7 @@
   (parse "request *step2 when #done1 fn [] + 2 2") => anything
   (parse "convince #done2 \"Done with 2\" fn [] query request-is-done *step2") => anything
   (parse "request *step3 when #done2 fn [] + 3 3") => anything
-  (Thread/sleep 30)
+  (Thread/sleep 30) => anything
   (parse "query request-is-done *step1") => true
   (parse "query request-is-done *step1") => true
   (parse "query request-is-done *step1") => true

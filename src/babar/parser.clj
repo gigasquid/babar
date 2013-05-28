@@ -37,6 +37,8 @@
                 'requests-all' | 'beliefs-all'
     request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                    ('when'| 'until') space belief space expr  /
+                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
+                   'when' space belief space 'until' space belief space expr  /
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
@@ -55,6 +57,17 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+;; (reset! commitments {})
+;; (def temp (atom 69))
+;; (defn increase-temp []
+;;   (swap! temp inc))
+;; @commitments
+;; (parse "convince #just-right \"It is just-right\" fn [] > @temp 70")
+;; (parse "convince #start \"Time to start\" fn [] > @temp 68")
+;; (parse "request *raise-temp when #start until #just-right fn [] (increase-temp)")
+;; (map fufill-commitment (unfufilled-commitments))
+;; @temp
+;; (increase-temp)
 
 (defn babar-eval [expr]
   (eval expr))
