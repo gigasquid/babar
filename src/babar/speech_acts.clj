@@ -118,9 +118,14 @@
 (defn unfufilled-commitments []
   (into {} (filter need-to-fufill-commitment? @commitments)))
 
+(defn complete-until [until]
+  (do
+    (when @speak-flag (say (:str until)))
+    true))
+
 (defn should-mark-complete? [c]
   (if (:until c)
-    ((:fn (:until c)))
+    (if ((:fn (:until c))) (complete-until (:until c)) false)
     true))
 
 (defn fufill-commitment [entry]
