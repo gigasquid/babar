@@ -26,7 +26,7 @@
     <space> = <#'[\\s\\t\\n]+'>
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
-    speech-act = commitment | belief | query | request | convince | assertion
+    speech-act = commitment | belief | query | request | convince | assertion | speak-beliefs
     assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
                 <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'query' space querytype space (commitment | belief) /
@@ -40,6 +40,7 @@
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
+    speak-beliefs = <'speak-beliefs'> space boolean
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
@@ -53,7 +54,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
 
 (defn babar-eval [expr]
   (eval expr))
@@ -88,6 +88,7 @@
    :querytype identity
    :query query
    :readprogram read-program
+   :speak-beliefs speak-beliefs
    :program (comp eval-program list)})
 
 (defn parse [input]

@@ -94,7 +94,7 @@
   (parse "query request-completed *lower-temp") => nil
   (parse "query request-value *lower-temp") => nil
   (parse "def temperature 75") => anything
-  (Thread/sleep 30)
+  (Thread/sleep 80)
   (parse "query request-value *lower-temp") => :lower-the-temp-action
   (nil? (parse "query request-completed *lower-temp")) => false
   (against-background (before :facts (reset-commitments))))
@@ -131,3 +131,23 @@
   (parse "query request-value *cat") => nil
   (parse "query request-errors *cat") => "Divide by zero"
   (against-background (before :facts (reset-commitments))))
+
+
+(facts "about processing mulit step requests"
+  (parse "request *step1 fn [] + 1 1") => anything
+  (parse "convince #done1 \"Done with 1\" fn [] query request-is-done *step1") => anything
+  (parse "request *step2 when #done1 fn [] + 2 2") => anything
+  (parse "convince #done2 \"Done with 2\" fn [] query request-is-done *step2") => anything
+  (parse "request *step3 when #done2 fn [] + 3 3") => anything
+  (Thread/sleep 30)
+  (parse "query request-is-done *step1") => true
+  (parse "query request-is-done *step1") => true
+  (parse "query request-is-done *step1") => true
+  (against-background (before :facts (reset-commitments))))
+
+
+(facts "about speak-beliefs"
+  (parse "speak-beliefs true") => anything
+  @speak-flag => true
+  (parse "speak-beliefs false") => anything
+  @speak-flag => false)

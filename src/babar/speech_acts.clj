@@ -1,17 +1,25 @@
 (ns babar.speech-acts
   (:require [clj-time.core :as time]
             [clj-time.format :as tformat]
-            [babar.commands :refer :all]))
+            [babar.commands :refer :all]
+            [me.raynes.conch :as conch]
+            ))
+
+(conch/programs say)
 
 (def commitments (atom {}))
 (def beliefs (atom {}))
 (def commitments-agent (agent {}))
+(def speak-flag (atom false))
 
 (defrecord Commitment [fn val completed created errors when])
 (defrecord Belief [str fn])
 
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
 (tformat/unparse built-in-formatter (time/now))
+
+(defn speak-beliefs [val]
+  (if val (reset! speak-flag true) (reset! speak-flag false)))
 
 (defn gen-timestamp []
   (tformat/unparse built-in-formatter (time/now)))
@@ -83,11 +91,16 @@
   ([id params form] (babar-defn (list (symbol id) params form))))
 
 
+(defn check-when-belief [when-pred]
+  (if ((:fn when-pred))
+    (do (when @speak-flag (say (:str when-pred)))
+        true)))
+
 (defn need-to-fufill-commitment? [c]
   (try
     (let [not-complete (nil? (:completed (val c)))
          when-pred (:when (val c))]
-         (and not-complete (if when-pred ((:fn when-pred)) true)))
+         (and not-complete (if when-pred (check-when-belief when-pred) true)))
     (catch Exception e (do
                          (swap! commitments merge {(key c) (assoc ((key c) @commitments) :errors (.getMessage e))})
                          nil))))
@@ -108,7 +121,7 @@
   (do
    (swap! commitments merge
           (into {} (map fufill-commitment (unfufilled-commitments))))
-   (Thread/sleep 15)
+   (Thread/sleep 10)
    (recur nil)))
 
 (defn init-commitments []

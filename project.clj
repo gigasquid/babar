@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [instaparse "1.0.1"]
                  [clj-time "0.5.0"]
+                 [me.raynes/conch "0.5.0"]
                  [clj-drone "0.1.4"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]
                    :plugins [[lein-midje "2.0.1"]] }})

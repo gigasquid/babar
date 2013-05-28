@@ -13,4 +13,3 @@ convince #flying "I am flying" fn [] (navdata-equal :control-state :hovering).
 request *take-off when #landed fn [] (drone :take-off).
 request *land when #flying fn [] (drone :land).
 
-#This works 
