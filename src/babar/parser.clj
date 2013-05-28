@@ -33,10 +33,10 @@
             'query' space querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
-                'request-when' | 'request-is-done' | 'belief-str' | 'belief-fn' |
+                'request-when' | 'request-is-done' | 'request-until' | 'belief-str' | 'belief-fn' |
                 'requests-all' | 'beliefs-all'
     request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
-                   <'when'> space belief space expr  /
+                   ('when'| 'until') space belief space expr  /
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
@@ -54,6 +54,7 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (defn babar-eval [expr]
   (eval expr))

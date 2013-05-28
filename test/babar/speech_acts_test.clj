@@ -11,7 +11,7 @@
 (defn setup-commitments []
   (swap! commitments merge
          {:test (make-commitment (fn [] "test") 1 "completed" "error"
-                                 (make-belief "Everything is fine" (fn [] (= 1 1))))}))
+                                 (make-belief "Everything is fine" (fn [] (= 1 1))) nil)}))
 
 
 (defn reset-beliefs []
@@ -39,7 +39,7 @@
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true
   (against-background  (before :facts
                                (swap! commitments merge
-                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil nil)}))))
+                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil nil nil)}))))
 
 
 (facts "about accepting requests"
@@ -53,6 +53,7 @@
   (nil? (parse "query request-created *test")) => false
   (nil? (parse "query request-fn *test")) => false
   (nil? (parse "query request-when *test")) => false
+  (nil? (parse "query request-until *test")) => true
   (parse "query request-errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 
@@ -98,6 +99,19 @@
   (parse "query request-value *lower-temp") => :lower-the-temp-action
   (nil? (parse "query request-completed *lower-temp")) => false
   (against-background (before :facts (reset-commitments))))
+
+(def temp (atom 65))
+(defn increase-temp []
+  (swap! temp inc))
+
+(facts "about processing commitments with until"
+  (parse "convince #just-right \"It is just-right\" fn [] > @temp 70") => anything
+  (parse "request *raise-temp until #just-right fn [] (increase-temp)") => anything
+  (Thread/sleep 60)
+  (parse "query request-is-done *raise-temp") => true
+  (parse "query request-value *raise-temp")   => 71
+  (nil?(parse "query request-completed *raise-temp")) => false
+  (against-background (before :facts (reset! temp 69))))
 
 (facts "about processing multiple commitments"
   (type (parse "request *cat fn [] :meow")) => babar.speech_acts.Commitment
