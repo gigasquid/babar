@@ -54,9 +54,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-;(parse "request *init fn [] do (drone-initialize) (sleep 10)")
-                                        ;(parse "query request-is-done *init")
-
 
 (defn babar-eval [expr]
   (eval expr))

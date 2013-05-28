@@ -82,10 +82,15 @@
 (defn babar-assert ([id val] (babar-def (list (symbol id) val)))
   ([id params form] (babar-defn (list (symbol id) params form))))
 
+
 (defn need-to-fufill-commitment? [c]
-  (let [not-complete (nil? (:completed (val c)))
-        when-pred (:when (val c))]
-    (and not-complete (if when-pred ((:fn when-pred)) true))))
+  (try
+    (let [not-complete (nil? (:completed (val c)))
+         when-pred (:when (val c))]
+         (and not-complete (if when-pred ((:fn when-pred)) true)))
+    (catch Exception e (do
+                         (swap! commitments merge {(key c) (assoc ((key c) @commitments) :errors (.getMessage e))})
+                         nil))))
 
 (defn unfufilled-commitments []
   (into {} (filter need-to-fufill-commitment? @commitments)))

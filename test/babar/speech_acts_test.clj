@@ -121,3 +121,13 @@
   (parse "query request-value *cat") => nil
   (parse "query request-errors *cat") => "Divide by zero"
   (against-background (before :facts (reset-commitments))))
+
+
+(facts "about processing commitment with a when error"
+  (type (parse "convince #bad \"This is really bad.\" fn [] / 0 0")) => babar.speech_acts.Belief
+  (type (parse "request *cat when #bad fn [] + 1 1")) => babar.speech_acts.Commitment
+  (parse "query request-completed *cat") => nil
+  (parse "query request-is-done *cat") => false
+  (parse "query request-value *cat") => nil
+  (parse "query request-errors *cat") => "Divide by zero"
+  (against-background (before :facts (reset-commitments))))
