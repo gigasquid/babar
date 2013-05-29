@@ -2,14 +2,14 @@
   (:require [clj-time.core :as time]
             [clj-time.format :as tformat]
             [babar.commands :refer :all]
-            [me.raynes.conch :as conch] ))
+            [me.raynes.conch :as conch]
+            ))
 
 (conch/programs say)
 
 (def commitments (atom {}))
 (def beliefs (atom {}))
 (def commitments-agent (agent {}))
-(def say-agent (agent nil))
 (def speak-flag (atom false))
 
 (defrecord Commitment [fn val completed created errors when until])
@@ -17,11 +17,6 @@
 
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
 (tformat/unparse built-in-formatter (time/now))
-
-(defn say-belief [val str]
-  (do
-    (when-not (= val str) (say str))
-    str))
 
 (defn speak-beliefs [val]
   (if val (reset! speak-flag true) (reset! speak-flag false)))
@@ -103,7 +98,7 @@
 
 (defn check-when-belief [when-pred]
   (if ((:fn when-pred))
-    (do (when @speak-flag (send-off say-agent say-belief (:str when-pred)))
+    (do (when @speak-flag (say (:str when-pred)))
         true)))
 
 (defn need-to-fufill-commitment? [c]
@@ -121,7 +116,7 @@
 
 (defn complete-until [until]
   (do
-    (when @speak-flag (send-off say-agent say-belief (:str until)))
+    (when @speak-flag (say (:str until)))
     true))
 
 (defn should-mark-complete? [c]
