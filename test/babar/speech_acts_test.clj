@@ -149,7 +149,7 @@
   (parse "query request-completed *cat") => nil
   (parse "query request-is-done *cat") => false
   (parse "query request-value *cat") => nil
-  (parse "query request-errors *cat") => "Divide by zero"
+  (parse "query request-errors *cat") => "java.lang.ArithmeticException: Divide by zero Divide by zero"
   (against-background (before :facts (reset-commitments))))
 
 
@@ -160,7 +160,7 @@
   (parse "query request-completed *cat") => nil
   (parse "query request-is-done *cat") => false
   (parse "query request-value *cat") => nil
-  (parse "query request-errors *cat") => "Divide by zero"
+  (parse "query request-errors *cat") => "java.lang.ArithmeticException: Divide by zero Divide by zero"
   (against-background (before :facts (reset-commitments))))
 
 

@@ -116,7 +116,7 @@
       (and not-complete
            (if when-pred (check-when-belief when-pred) true)))
     (catch Exception e (do
-                         (swap! commitments merge {(key c) (assoc ((key c) @commitments) :errors (.getMessage e))})
+                         (swap! commitments merge {(key c) (assoc ((key c) @commitments) :errors (str e " " (.getMessage e)))})
                          nil))))
 
 (defn unfufilled-commitments []
@@ -139,7 +139,7 @@
       [ k (merge c {:val result :completed (when (should-mark-complete? c) (gen-timestamp))})]
       )
     (catch Exception e
-      [ (first entry) (merge (last entry) {:errors (.getMessage e)})])))
+      [ (first entry) (merge (last entry) {:errors (str e " " (.getMessage e))})])))
 
 (defn fufill-commitments [_]
   (do

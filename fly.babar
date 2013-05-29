@@ -16,3 +16,8 @@ convince #high-enough "I am high enough" fn [] (navdata-gt :altitude 1.5).
 request *take-off when #landed fn [] (drone :take-off).
 request *cruising-alt when #flying until #high-enough fn [] (drone :up 0.5).
 request *land when #high-enough fn [] (drone :land).
+
+convince #done "Whee! I am done." fn [] and (navdata-equal :control-state :landed)
+                                            query request-is-done *land.
+
+request *end-navstream when #done fn [] (end-navstream).

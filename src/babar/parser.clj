@@ -57,7 +57,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-
 (defn babar-eval [expr]
   (eval expr))
 
