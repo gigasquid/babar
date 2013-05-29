@@ -150,7 +150,7 @@ According to John Searle's
 There are [Illocutionary Acts](http://en.wikipedia.org/wiki/Illocutionary_act)
 that involve the pragmatic meaning of a behind a sentence. Some of the
 english verbs denoting these acts are "assert", "command", "request", 
-"answer question". For example the sentance, "Pass the salt.", is an
+"query". For example the sentance, "Pass the salt.", is an
 illocutionary act.  When a person hears the sentance, the meaning is
 interpreted as a command.  There are also
 [Perlocutionary Acts](http://en.wikipedia.org/wiki/Perlocutionary_act),
@@ -206,7 +206,7 @@ You can also specify a request to be executed when a belief is held.
 The request is executed when the belief predicate function evaluates
 to true.
 ```clojure
-  convince #too-warm "It is too warm." fn [] > temperature 70"
+  convince #too-warm "It is too warm." fn [] > temperature 70
   request *lower-temp when #too-warm fn [] :lower-the-temp-action
 ```
 
@@ -214,7 +214,7 @@ to true.
 You can specify a request to be executed until a belief is held.
 The request will continue to execute until the belief is held.
 ```clojure
-  convince #just-right "It is just-right" fn [] > @temp 70"
+  convince #just-right "It is just-right" fn [] > @temp 70
   request *raise-temp until #just-right fn [] (increase-temp)
 ```
 
