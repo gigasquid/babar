@@ -52,7 +52,7 @@
     deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*'
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
-                | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep'
+                | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep' | 'first'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'
@@ -60,10 +60,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-(reset! commitments {})
-(def x (atom 1));
-(defn inc-x []
-  (swap! x inc))
 
 (defn babar-eval [expr]
   (eval expr))

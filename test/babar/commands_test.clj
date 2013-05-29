@@ -80,3 +80,6 @@
 
 (facts "about sleep"
   (parse "sleep 5") => anything)
+
+(facts "about first"
+  (parse "first [1 2 3 4]") => 1)
