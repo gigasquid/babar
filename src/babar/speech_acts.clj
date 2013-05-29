@@ -13,7 +13,7 @@
 (def speak-flag (atom false))
 (def last-said (atom nil))
 
-(defrecord Commitment [fn val completed created errors when until])
+(defrecord Commitment [fn val completed created errors when until ongoing])
 (defrecord Belief [str fn])
 
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
@@ -41,28 +41,31 @@
   (if (= name "convince")
     (be-convinced id str expr)))
 
-(defn make-commitment [fn val completed errors when until]
+(defn make-commitment [fn val completed errors when until ongoing]
   (let [cfn (if (vector? fn) (first fn) fn)]
-   (Commitment. cfn val completed (gen-timestamp) errors when until)))
+   (Commitment. cfn val completed (gen-timestamp) errors when until ongoing)))
 
 
-(defn request-plain [name id expr]
+(defn request-plain [name id expr ongoing]
   `((keyword ~id)
     (swap! commitments merge
-           {(keyword ~id) (make-commitment ~expr nil nil nil nil nil)})))
+           {(keyword ~id) (make-commitment ~expr nil nil nil nil nil ~ongoing)})))
 
-(defn request-when-until [name id when until expr]
+(defn request-when-until [name id when until expr ongoing]
   `((keyword ~id)
     (swap! commitments merge
-           {(keyword ~id) (make-commitment ~expr nil nil nil ~when ~until)})))
+           {(keyword ~id) (make-commitment ~expr nil nil nil ~when ~until ~ongoing)})))
 
 (defn request
-  ([name id expr] (request-plain name id expr))
+  ([name id expr] (request-plain name id expr nil))
+  ([name id ongoing expr] (request-plain name id expr true))
   ([name id type belief expr] (case type
-                                "when" (request-when-until name id belief nil expr)
-                                "until" (request-when-until name id nil belief expr)))
+                                "when" (request-when-until name id belief nil expr nil)
+                                "until" (request-when-until name id nil belief expr nil)))
+  ([name id when when-belief ongoing expr]
+     (request-when-until name id when-belief expr true))
   ([name id when when-belief until until-belief expr]
-     (request-when-until name id when-belief until-belief expr)))
+     (request-when-until name id when-belief until-belief expr nil)))
 
 (defn commitment [name]
   `((keyword ~name) @commitments))
@@ -87,6 +90,7 @@
       "request-errors" (commitment-belief-query c :errors)
       "request-when" (commitment-belief-query c :when)
       "request-until" (commitment-belief-query c :until)
+      "request-ongoing" (commitment-belief-query c :ongoing)
       "requests-all" (all-commitments-beliefs commitments)
       "belief-str" (commitment-belief-query c :str)
       "belief-fn" (commitment-belief-query c :fn)
@@ -130,7 +134,7 @@
 (defn should-mark-complete? [c]
   (if (:until c)
     (if ((:fn (:until c))) (complete-until (:until c)) false)
-    true))
+    (not (:ongoing c))))
 
 (defn fufill-commitment [entry]
   (try

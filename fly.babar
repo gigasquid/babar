@@ -19,5 +19,4 @@ request *land when #high-enough fn [] (drone :land).
 
 convince #done "Whee! I am done." fn [] and (navdata-equal :control-state :landed)
                                             query request-is-done *land.
-
 request *end-navstream when #done fn [] (end-navstream).

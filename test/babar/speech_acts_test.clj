@@ -11,7 +11,8 @@
 (defn setup-commitments []
   (swap! commitments merge
          {:test (make-commitment (fn [] "test") 1 "completed" "error"
-                                 (make-belief "Everything is fine" (fn [] (= 1 1))) nil)}))
+                                 (make-belief "Everything is fine"
+                                              (fn [] (= 1 1))) nil nil)}))
 
 
 (defn reset-beliefs []
@@ -39,7 +40,7 @@
   (= babar.speech_acts.Commitment (type (parse "*raise-temp"))) => true
   (against-background  (before :facts
                                (swap! commitments merge
-                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil nil nil)}))))
+                                      {:raise-temp (make-commitment '(+ 1 1) 1 true nil nil nil nil)}))))
 
 
 (facts "about accepting requests"
@@ -54,6 +55,7 @@
   (nil? (parse "query request-fn *test")) => false
   (nil? (parse "query request-when *test")) => false
   (nil? (parse "query request-until *test")) => true
+  (nil? (parse "query request-ongoing *test")) => true
   (parse "query request-errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 
@@ -163,6 +165,15 @@
   (parse "query request-errors *cat") => "java.lang.ArithmeticException: Divide by zero Divide by zero"
   (against-background (before :facts (reset-commitments))))
 
+(def x1 (atom 1))
+(defn inc-x1 []
+  (swap! x1 inc))
+(facts "about processing ongoing commitments"
+  (parse "request *count ongoing fn [] (inc-x1)") => anything
+  (Thread/sleep 20) => anything
+  (> (parse "@x1") 2) => true
+  (against-background (before :facts (reset-commitments))))
+
 
 (facts "about processing mulit step requests"
   (parse "request *step1 fn [] + 1 1") => anything
@@ -172,8 +183,8 @@
   (parse "request *step3 when #done2 fn [] + 3 3") => anything
   (Thread/sleep 30) => anything
   (parse "query request-is-done *step1") => true
-  (parse "query request-is-done *step1") => true
-  (parse "query request-is-done *step1") => true
+  (parse "query request-is-done *step2") => true
+  (parse "query request-is-done *step3") => true
   (against-background (before :facts (reset-commitments))))
 
 
