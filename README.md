@@ -106,9 +106,33 @@ At this basic level it imports the whole namespace and does require
 - println (println item & others)
 
 Concatonates the items as a string and prints it out to stdout
+
 ```clojure
 println "cat" ;=> "cat" (returns nil)
 println "cat" " " 1 " " :duck ;=> "cat 1 :duck" (returns nil)
+```
+
+- get (get hash key)
+Gets the value of a hash by key
+
+```clojure
+get {:a 1} :a => :a
+```
+
+- do (do expr expr+)
+Do multiple expressions
+
+```clojure
+do (def s1 1) (def s2 2)
+s1 ;=> 1
+s2 ;=> 2
+```
+
+- sleep (sleep ms)
+Sleep for given milliseconds
+
+```clojure
+sleep 5
 ```
 
 ### Anonymous Functions
@@ -169,7 +193,9 @@ evaluates to true when the machine "believes" it.
 
 Accepting a request creates an internal commitment that is evaluated
 at a future time.  Behind the scenese there is a cron-like watcher
-that continually sees if it has any commitments to execute.
+that continually sees if it has any commitments to execute.  If there
+is an error that occurs, then it will have an error captured that you
+can query by using "query request-errors".
 
 ```clojure
   request *dog fn [] :bark ;=> babar.speech_acts.Commitment
@@ -224,7 +250,31 @@ query beliefs.all
 ### Speaking the Beliefs using Say
 * speak-beliefs (speak-beliefs [true | false ]
 
-If you toggle on the speak-beliefs, then (if you 
+If you toggle on the speak-beliefs, then (if you have a mac and say),
+then any beliefs will be spoken aloud when there belief fns evaluate
+to true - or the beliefs are being held.  If there are multiple
+beliefs, (like using an until), then it will only speak when the
+belief changes.
+
+## Reading babar programs
+* read (read filename)
+
+This command will read a *.babar file into the repl and evaluate it
+it.  A program is composed of multiple expressions that are delimited
+by a period.
+
+simple.babar
+```clojure
+assert a 1.
+assert b 10.
+assert c [:a :b (+ a b)].
+```
+
+```clojure
+read "simple.babar" ;=> #'user/c
+c ;=> [:a :b 11]
+```
+
 
 ## REPL
 Launch a REPL

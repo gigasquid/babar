@@ -68,7 +68,7 @@
   ((parse "query belief-fn #nice-day")) => true
   (against-background (before :facts (setup-beliefs))))
 
-(facts "about query query about all beliefs"
+(facts "about querying all beliefs"
   (parse "convince #sunny \"It is sunny\" fn [] = 1 1")
   (parse "convince #cloudy \"It is cloudy\" fn [] = 1 3")
   (parse "query beliefs-all") => (contains [:sunny :cloudy] :in-any-order)

@@ -66,6 +66,9 @@
   (parse "println \"cat\"") => nil
   (parse "println 1 2 3") => nil )
 
+(facts "about get"
+  (parse "get {:a 1} :a") => 1)
+
 (facts "about do"
   (parse "do (def s1 1) (def s2 2)") => anything
   (parse "s1") => 1
