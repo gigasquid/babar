@@ -101,7 +101,6 @@ At this basic level it imports the whole namespace and does require
 :refer :all
 ```clojure
   import "clojure.java.io"
-  parse file
 ```
 
 - println (println item & others)
@@ -155,37 +154,77 @@ A belief is a datatype designated by a #name
 
 ### Convincing
 
-- be.convinced (be.convinced belief string predicate-function)
+- convinced (convinced belief string predicate-function)
 
 To be convinced will create an internal belief that has a human
 readable string as a description and a predicate function that
 evaluates to true when the machine "believes" it.
 
 ```clojure
-   be.convinced #sunny "It is sunny" fn [x] (= 1 1)
+   convince #sunny "It is sunny" fn [x] (= 1 1)
 ```
 
 ### Requests
-- accept.request (accept.request commitment function)
+- request (request commitment function)
 
 Accepting a request creates an internal commitment that is evaluated
-at a future time
+at a future time.  Behind the scenese there is a cron-like watcher
+that continually sees if it has any commitments to execute.
 
 ```clojure
-  accept.request *dog fn [] :bark ;=> babar.speech_acts.Commitment
+  request *dog fn [] :bark ;=> babar.speech_acts.Commitment
 ```
+
+- request (request commitment when belief function)
+You can also specify a request to be executed when a belief is held.
+The request is executed when the belief predicate function evaluates
+to true.
+```clojure
+  convince #too-warm "It is too warm." fn [] > temperature 70"
+  request *lower-temp when #too-warm fn [] :lower-the-temp-action
+```
+
+- request (request commitment until belief function)
+You can specify a request to be executed until a belief is held.
+The request will continue to execute until the belief is held.
+```clojure
+  convince #just-right "It is just-right" fn [] > @temp 70"
+  request *raise-temp until #just-right fn [] (increase-temp)
+```
+
+- request (request commitment when belief until function)
+You can specify a request to be executed when a belief is held and
+until another belief is held.
+
+````clojure
+   convince #just-right "It is just-right" fn [] > @temp 70
+   convince #start "Time to start" fn [] > @temp 68
+   request *raise-temp when #start until #just-right fn [] (increase-temp)
+````
 
 ### Query
-* answer.query
+* query
 
-answer.query request.[fn | completed | value | errors | created] fn)
-answer.query belif.[str | fn ])
+query request-[fn | completed | value | errors | created | when | until | is-done]
+fn)
+
+query belief.[str | fn ])
+
+query requests.all
+
+query beliefs.all
 
 ```clojure
-   accept.request *dog fn [] :bark
-   answer.query request.value *dog ;=> :bark
-   answer.query request.completed * dog ;=> "2013-05-17T19:58:07.882"
+   request *dog fn [] :bark.
+   query request-value *dog ;=> :bark
+   query request-completed * dog ;=> "2013-05-17T19:58:07.882"
+   query request-is-done ;=> true
 ```
+
+### Speaking the Beliefs using Say
+* speak-beliefs (speak-beliefs [true | false ]
+
+If you toggle on the speak-beliefs, then (if you 
 
 ## REPL
 Launch a REPL
