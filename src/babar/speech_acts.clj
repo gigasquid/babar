@@ -11,6 +11,7 @@
 (def beliefs (atom {}))
 (def commitments-agent (agent {}))
 (def speak-flag (atom false))
+(def last-said (atom nil))
 
 (defrecord Commitment [fn val completed created errors when until])
 (defrecord Belief [str fn])
@@ -92,13 +93,20 @@
       "beliefs-all" (all-commitments-beliefs beliefs))))
 
 
+(defn say-belief [str]
+  (when-not (= @last-said str)
+    (do
+      (reset! last-said str)
+      (future (say str)))))
+
 (defn babar-assert ([id val] (babar-def (list (symbol id) val)))
   ([id params form] (babar-defn (list (symbol id) params form))))
 
 
 (defn check-when-belief [when-pred]
   (if ((:fn when-pred))
-    (do (when @speak-flag (say (:str when-pred)))
+    (do (when @speak-flag (say-belief (:str when-pred))
+              )
         true)))
 
 (defn need-to-fufill-commitment? [c]
@@ -116,7 +124,7 @@
 
 (defn complete-until [until]
   (do
-    (when @speak-flag (say (:str until)))
+    (when @speak-flag (say-belief (:str until)))
     true))
 
 (defn should-mark-complete? [c]
