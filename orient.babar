@@ -17,12 +17,13 @@ assert init-nav [] (drone-init-navdata).
 assert init-drone [] do (drone-initialize)
                         (set-log-data [:seq-num :battery :targets-num :targets])
                         (drone :init-targeting)
-                        (drone :target-roundel-v).
+                        (drone :target-roundel-v)
+                        (drone :hover-on-roundel).
 
-convince #oriented "I am oriented" fn [] (in-range).
-convince #not-oriented "I am oriented" fn [] (out-of-range).
-request *be-oriented when #not-oriented ongoing fn [] (drone :spin-right 0.25).
-request *celebrate when #oriented ongoing fn [] (drone :led_blink_orange).
+convince #oriented "I am good" fn [] (in-range).
+convince #not-oriented "I am not oriented" fn [] (out-of-range).
+request *be-oriented when #not-oriented ongoing fn [] (drone :led_blink_orange).
+request *celebrate when #oriented ongoing fn [] (drone :led_blink_green).
 
 convince #landed "I am on the ground" fn [] (navdata-equal :control-state :landed).
 convince #flying "I am flying" fn [] or (navdata-equal :control-state :flying)
