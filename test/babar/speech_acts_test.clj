@@ -56,6 +56,7 @@
   (nil? (parse "query request-when *test")) => false
   (nil? (parse "query request-until *test")) => true
   (nil? (parse "query request-ongoing *test")) => true
+  (nil? (parse "query request-cancelled *test")) => true
   (parse "query request-errors *test") => "error"
   (against-background (before :facts (setup-commitments))))
 

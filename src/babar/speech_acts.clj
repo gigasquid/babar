@@ -13,7 +13,7 @@
 (def speak-flag (atom false))
 (def last-said (atom nil))
 
-(defrecord Commitment [fn val completed created errors when until ongoing])
+(defrecord Commitment [fn val completed created errors when until ongoing cancelled])
 (defrecord Belief [str fn])
 
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
@@ -43,7 +43,7 @@
 
 (defn make-commitment [fn val completed errors when until ongoing]
   (let [cfn (if (vector? fn) (first fn) fn)]
-   (Commitment. cfn val completed (gen-timestamp) errors when until ongoing)))
+   (Commitment. cfn val completed (gen-timestamp) errors when until ongoing nil)))
 
 
 (defn request-plain [name id expr ongoing]
@@ -56,7 +56,12 @@
     (swap! commitments merge
            {(keyword ~id) (make-commitment ~expr nil nil nil ~when ~until ~ongoing)})))
 
+(defn cancel-commitment [id]
+  `(swap! commitments merge
+         {(keyword ~id) (assoc ((keyword ~id) @commitments) :cancelled true)}))
+
 (defn request
+  ([name id] (when (= name "request-cancel") (cancel-commitment id)))
   ([name id expr] (request-plain name id expr nil))
   ([name id ongoing expr] (request-plain name id expr true))
   ([name id type belief expr] (case type
@@ -91,6 +96,7 @@
       "request-when" (commitment-belief-query c :when)
       "request-until" (commitment-belief-query c :until)
       "request-ongoing" (commitment-belief-query c :ongoing)
+      "request-cancelled" (commitment-belief-query c :cancelled)
       "requests-all" (all-commitments-beliefs commitments)
       "belief-str" (commitment-belief-query c :str)
       "belief-fn" (commitment-belief-query c :fn)
@@ -115,7 +121,9 @@
 
 (defn need-to-fufill-commitment? [c]
   (try
-    (let [not-complete (nil? (:completed (val c)))
+    (let [not-complete (and
+                        (nil? (:completed (val c)))
+                        (nil? (:cancelled (val c))))
           when-pred (:when (val c))]
       (and not-complete
            (if when-pred (check-when-belief when-pred) true)))

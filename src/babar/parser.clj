@@ -23,7 +23,7 @@
     svector = ((space)* item (space)*)+
     bvector =  <#'\\['> ((space)* item (space)*)+ <#'\\]'> |
                <#'\\[\\]'>
-    <space> = <#'[\\s\\t\\n]+'>
+    <space> = <#'[\\s\\t\\n\\,]+'>
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince | assertion | speak-beliefs
@@ -34,7 +34,7 @@
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
                 'request-when' | 'request-is-done' | 'request-until' |
-                'request-ongoing' | 'belief-str' | 'belief-fn' |
+                'request-ongoing' | 'request-cancelled' | 'belief-str' | 'belief-fn' |
                 'requests-all' | 'beliefs-all'
     request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                    ('when'| 'until' | 'ongoing') space belief space expr  /
@@ -44,7 +44,8 @@
                    'when' space belief space 'ongoing' space expr  /
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                   'ongoing' space expr /
-                'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr
+                'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr /
+                'request-cancel' space  <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
     speak-beliefs = <'speak-beliefs'> space boolean
@@ -61,7 +62,6 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
-
 
 (defn babar-eval [expr]
   (eval expr))

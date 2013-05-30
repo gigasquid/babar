@@ -6,6 +6,7 @@ assert get-navdata [key] get @nav-data key.
 assert navdata-equal [key val] = (get-navdata key) val.
 assert see-target [] (navdata-equal :targets-num 1).
 assert target-data [] first (get-navdata :targets).
+assert first-target [] first (target-data).
 
 assert init-drone [] do (drone-initialize)
                         (set-log-data [:seq-num :control-state :targets-num :targets])

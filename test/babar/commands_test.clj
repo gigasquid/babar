@@ -82,4 +82,6 @@
   (parse "sleep 5") => anything)
 
 (facts "about first"
-  (parse "first [1 2 3 4]") => 1)
+  (parse "first [1 2 3 4]") => 1
+  (def x [2 3 4]) => anything
+  (parse "first x") => 2)

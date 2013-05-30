@@ -52,7 +52,7 @@
   `(Thread/sleep (first ~v)))
 
 (defn babar-first [v]
-  `(first ~v))
+  `(if (vector? (first ~v)) (first (first ~v)) (first ~v)))
 
 (defn babar-command [command v]
   (case command
