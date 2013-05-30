@@ -40,6 +40,8 @@
                    ('when'| 'until' | 'ongoing') space belief space expr  /
                  'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                    'when' space belief space 'until' space belief space expr  /
+                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
+                   'when' space belief space 'ongoing' space expr  /
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                   'ongoing' space expr /
                 'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space expr

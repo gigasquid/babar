@@ -63,7 +63,7 @@
                                 "when" (request-when-until name id belief nil expr nil)
                                 "until" (request-when-until name id nil belief expr nil)))
   ([name id when when-belief ongoing expr]
-     (request-when-until name id when-belief expr true))
+     (request-when-until name id when-belief nil expr true))
   ([name id when when-belief until until-belief expr]
      (request-when-until name id when-belief until-belief expr nil)))
 

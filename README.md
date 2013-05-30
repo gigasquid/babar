@@ -135,6 +135,13 @@ Sleep for given milliseconds
 sleep 5
 ```
 
+- first (first vec)
+First element of vector
+
+````clojure
+first [1 2 3] ;=> 1
+```
+
 ### Anonymous Functions
 You can create anonymous functions with the fn [x] syntax from
 clojure. And call them with surrounding parens.
@@ -201,7 +208,7 @@ can query by using "query request-errors".
   request *dog fn [] :bark ;=> babar.speech_acts.Commitment
 ```
 
-- request (request commitment when belief function)
+- request when (request commitment when belief function)
 You can also specify a request to be executed when a belief is held.
 The request is executed when the belief predicate function evaluates
 to true.
@@ -210,7 +217,7 @@ to true.
   request *lower-temp when #too-warm fn [] :lower-the-temp-action
 ```
 
-- request (request commitment until belief function)
+- request until (request commitment until belief function)
 You can specify a request to be executed until a belief is held.
 The request will continue to execute until the belief is held.
 ```clojure
@@ -218,7 +225,7 @@ The request will continue to execute until the belief is held.
   request *raise-temp until #just-right fn [] (increase-temp)
 ```
 
-- request (request commitment when belief until function)
+- request when until (request commitment when belief until function)
 You can specify a request to be executed when a belief is held and
 until another belief is held.
 
@@ -227,6 +234,21 @@ until another belief is held.
    convince #start "Time to start" fn [] > @temp 68
    request *raise-temp when #start until #just-right fn [] (increase-temp)
 ````
+
+- request ongoing (request commitment ongoing function)
+You can specify a requst to be executed repeatedly with no end.
+
+```clojure
+   request *count ongoing fn [] (inc-x1)
+```
+
+- request when ongoing (request commitment when belief ongoing
+  function)
+
+```clojure
+  convince #start \"Time to start\" fn [] = y2 2
+  request *count when #start ongoing fn [] (inc-x1)
+```
 
 ### Query
 * query

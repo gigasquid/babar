@@ -174,8 +174,19 @@
   (> (parse "@x1") 2) => true
   (against-background (before :facts (reset-commitments))))
 
+(def y2 1)
+(facts "about processing when and ongoing commitments"
+  (parse "convince #start \"Time to start\" fn [] = y2 2")
+  (parse "request *count when #start ongoing fn [] (inc-x1)") => anything
+  (Thread/sleep 20) => anything
+  (parse "@x1") => 1
+  (def y2 2) => anything
+  (Thread/sleep 20) => anything
+  (> (parse "@x1") 2) => true
+  (against-background (before :facts (do (reset! x1 1)
+                                         (reset-commitments)))))
 
-(facts "about processing mulit step requests"
+(facts "about processing multi step requests"
   (parse "request *step1 fn [] + 1 1") => anything
   (parse "convince #done1 \"Done with 1\" fn [] query request-is-done *step1") => anything
   (parse "request *step2 when #done1 fn [] + 2 2") => anything
