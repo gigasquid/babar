@@ -287,10 +287,10 @@ can be queried, but it will not be executed.
   cancel-request *dog
 ```
 
-### Query
+### Answering Queries
 * query
 
-Asking questions about requests, beliefs and values.
+Answering questions about requests, beliefs and values.
 
 - (query
 request-[fn | completed | value | errors | created | when | until | is-done | cancelled | ongoing]
@@ -335,6 +335,26 @@ You can ask what the value of a identifier is
   query value x ;=> 1
 ```
 
+### Asking Queries
+You can ask queries are well as answering them. Asking a query is
+manifested as a side effect - a printed speech act.  Right now the
+statment prints on the REPL console.  It always could be directed to
+an external file that another system could read...
+
+- ask-query identifier
+
+```clojure
+  ask-query what-is-this ;=> query what-is-this.
+```
+
+The REPL will also respond with an ask-query if you define
+a function with a undeclared variable
+
+```clojure
+  assert cat [] + x 1 ;=> query x.
+  assert cat x 2 ;=> x
+  cat: ;=> 3
+```
 
 ### Speaking the Beliefs using Say
 * speak-beliefs

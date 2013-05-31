@@ -31,7 +31,8 @@
                 (<'assert'> | <'def'>) space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'query' space querytype space (commitment | belief) /
             'query' space querytype space identifier /
-            'query' space querytype
+            'query' space querytype /
+            'ask-query' space  #'[a-z][0-9a-zA-Z\\-\\_]*'
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
                 'request-when' | 'request-is-done' | 'request-until' |
@@ -66,17 +67,6 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
-
-(defn b-declare [s]
-  (eval `(declare ~s)))
-
-(defn babar-indentifier [s]
-  (if (resolve (read-string s))
-    (read-string s)
-    (do
-      (println (str "\nquery " s "."))
-      (b-declare (read-string s))
-      (symbol s))))
 
 (defn babar-eval [expr]
   (eval expr))

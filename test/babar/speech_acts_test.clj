@@ -219,3 +219,13 @@
 (facts "about querying values"
   (def x 1)
   (parse "query value x") => 1)
+
+(facts "about asking questions about unbound vars"
+  (parse "assert cat [] + x 1") => anything
+  (parse "assert x 2") => anything
+  (parse "cat:") => 3)
+
+
+;question outputs are side effects
+(facts "about asking questions"
+  (parse "ask-query ssd") => nil)

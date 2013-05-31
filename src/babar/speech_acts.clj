@@ -83,9 +83,11 @@
 (defn all-commitments-beliefs [a]
   (vec (keys @a)))
 
-(defn query [name type & [v]]
-  (when (= name "query")
-    (case type
+(defn ask-query [s]
+   (println (str "\nquery " s ".")))
+
+(defn answer-query [type v]
+  (case type
       "request-value" (commitment-belief-query v :val)
       "request-fn" (commitment-belief-query v :fn)
       "request-completed" (commitment-belief-query v :completed)
@@ -100,8 +102,12 @@
       "belief-str" (commitment-belief-query v :str)
       "belief-fn" (commitment-belief-query v :fn)
       "beliefs-all" (all-commitments-beliefs beliefs)
-      "value" `~v)))
+      "value" `~v))
 
+(defn query [name id & v]
+  (case name
+    "query" (answer-query id (first v))
+    "ask-query" (ask-query id)))
 
 (defn say-belief [str]
   (when-not (= @last-said str)
@@ -163,3 +169,15 @@
 
 (defn init-commitments []
   (send commitments-agent fufill-commitments))
+
+(defn b-declare [s]
+  (eval `(declare ~s)))
+
+(defn babar-indentifier [s]
+  (if (resolve (read-string s))
+    (read-string s)
+    (do
+      (ask-query s)
+      (b-declare (read-string s))
+      (symbol s))))
+
