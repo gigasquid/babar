@@ -8,7 +8,7 @@
 
 (def parser
   (insta/parser
-   "program =   (expr / vector) / (expr <'.'> space*)+
+   "program =   (expr / vector) / (expr <('.'|'?')> space*)+
     expr = item | command | functioncall | readprogram
     readprogram = <'read'> space string
     command = commandkey space vector |

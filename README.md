@@ -356,6 +356,9 @@ a function with a undeclared variable
   cat: ;=> 3
 ```
 
+Even cooler - if the speak-beliefs flag is true, it will also
+speak the query aloud as well :)
+
 ### Speaking the Beliefs using Say
 * speak-beliefs
 - (speak-beliefs [true | false ])
@@ -377,7 +380,8 @@ belief changes.
 
 This command will read a *.babar file into the repl and evaluate it
 it.  A program is composed of multiple expressions that are delimited
-by a period.
+by a period or a question mark. Question marks can of course be used
+for queries.
 
 simple.babar
 ```clojure

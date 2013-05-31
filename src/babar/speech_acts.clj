@@ -84,7 +84,11 @@
   (vec (keys @a)))
 
 (defn ask-query [s]
-   (println (str "\nquery " s ".")))
+  (let [question (str "\nquery " s "?")]
+   (do
+     (println question)
+     (when @speak-flag
+       (future (conchll/proc "say" "-v" @speak-voice question))))))
 
 (defn answer-query [type v]
   (case type
