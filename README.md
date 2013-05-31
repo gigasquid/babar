@@ -289,15 +289,11 @@ can be queried, but it will not be executed.
 ### Query
 * query
 
-(query
+Asking questions about requests, beliefs and values.
+
+- (query
 request-[fn | completed | value | errors | created | when | until | is-done | cancelled | ongoing]
 request)
-
-query belief.[str | fn ])
-
-query requests.all
-
-query beliefs.all
 
 ```clojure
    request *dog fn [] :bark.
@@ -305,6 +301,39 @@ query beliefs.all
    query request-completed * dog ;=> "2013-05-17T19:58:07.882"
    query request-is-done ;=> true
 ```
+
+- query belief-[str | fn ])
+
+```clojure
+  convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
+  query belief-str #sunny ;=> "It is sunny"
+  query belief-fn #sunny ;=> function
+```
+
+- query requests-all
+
+```clojure
+  request *step1 fn [] + 1 1 ;=> commitment
+  request *step2 fn [] + 2 2 ;=> commitment
+  query requests-all ;=>  [:step1 :step2]
+```
+
+- query beliefs.all
+
+```clojure
+  convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
+  convince #rainy "It is rainy" fn [] = 1 2 ;=> belief
+  query beliefs-all ;=> [:sunny :rainy]
+
+- query value identifer
+
+You can ask what the value of a identifier is
+
+```clojure
+  assert x 1 ;=> x
+  query value x ;=> 1
+```
+
 
 ### Speaking the Beliefs using Say
 * speak-beliefs

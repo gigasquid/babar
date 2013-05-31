@@ -30,12 +30,13 @@
     assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
                 <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'query' space querytype space (commitment | belief) /
+            'query' space querytype space identifier /
             'query' space querytype
     querytype = 'request-value' | 'request-details' | 'request-completed' |
                 'request-created' | 'request-errors' | 'request-fn' |
                 'request-when' | 'request-is-done' | 'request-until' |
                 'request-ongoing' | 'request-cancelled' | 'belief-str' | 'belief-fn' |
-                'requests-all' | 'beliefs-all'
+                'requests-all' | 'beliefs-all' | 'value'
     request =   'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space
                    ('when'| 'until' | 'ongoing') space belief space expr  /
                  'request' space <'*'>  #'[a-z][0-9a-zA-Z\\-\\_]*' space

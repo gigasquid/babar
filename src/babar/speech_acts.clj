@@ -83,23 +83,24 @@
 (defn all-commitments-beliefs [a]
   (vec (keys @a)))
 
-(defn query [name type & [c]]
+(defn query [name type & [v]]
   (when (= name "query")
     (case type
-      "request-value" (commitment-belief-query c :val)
-      "request-fn" (commitment-belief-query c :fn)
-      "request-completed" (commitment-belief-query c :completed)
-      "request-is-done" (commitment-is-done c)
-      "request-created" (commitment-belief-query c :created)
-      "request-errors" (commitment-belief-query c :errors)
-      "request-when" (commitment-belief-query c :when)
-      "request-until" (commitment-belief-query c :until)
-      "request-ongoing" (commitment-belief-query c :ongoing)
-      "request-cancelled" (commitment-belief-query c :cancelled)
+      "request-value" (commitment-belief-query v :val)
+      "request-fn" (commitment-belief-query v :fn)
+      "request-completed" (commitment-belief-query v :completed)
+      "request-is-done" (commitment-is-done v)
+      "request-created" (commitment-belief-query v :created)
+      "request-errors" (commitment-belief-query v :errors)
+      "request-when" (commitment-belief-query v :when)
+      "request-until" (commitment-belief-query v :until)
+      "request-ongoing" (commitment-belief-query v :ongoing)
+      "request-cancelled" (commitment-belief-query v :cancelled)
       "requests-all" (all-commitments-beliefs commitments)
-      "belief-str" (commitment-belief-query c :str)
-      "belief-fn" (commitment-belief-query c :fn)
-      "beliefs-all" (all-commitments-beliefs beliefs))))
+      "belief-str" (commitment-belief-query v :str)
+      "belief-fn" (commitment-belief-query v :fn)
+      "beliefs-all" (all-commitments-beliefs beliefs)
+      "value" `~v)))
 
 
 (defn say-belief [str]

@@ -215,3 +215,7 @@
   @speak-flag => true
   (parse "speak-beliefs false") => anything
   @speak-flag => false)
+
+(facts "about querying values"
+  (def x 1)
+  (parse "query value x") => 1)
