@@ -229,6 +229,7 @@ can query by using "query request-errors".
 ```
 
 - request when (request commitment when belief function)
+
 You can also specify a request to be executed when a belief is held.
 The request is executed when the belief predicate function evaluates
 to true.
@@ -238,6 +239,7 @@ to true.
 ```
 
 - request until (request commitment until belief function)
+
 You can specify a request to be executed until a belief is held.
 The request will continue to execute until the belief is held.
 ```clojure
@@ -246,6 +248,7 @@ The request will continue to execute until the belief is held.
 ```
 
 - request when until (request commitment when belief until function)
+
 You can specify a request to be executed when a belief is held and
 until another belief is held.
 
@@ -256,6 +259,7 @@ until another belief is held.
 ````
 
 - request ongoing (request commitment ongoing function)
+
 You can specify a requst to be executed repeatedly with no end.
 
 ```clojure
@@ -265,16 +269,29 @@ You can specify a requst to be executed repeatedly with no end.
 - request when ongoing (request commitment when belief ongoing
   function)
 
+You can specify a request to be executed repeatedly with no end, when
+a belief is true.
+
 ```clojure
   convince #start \"Time to start\" fn [] = y2 2
   request *count when #start ongoing fn [] (inc-x1)
 ```
 
+- cancel-request  (cancel-request request)
+
+You can cancel a request.  The request itself is still remembered and
+can be queried, but it will not be executed.
+
+```clojure
+  cancel-request *dog
+```
+
 ### Query
 * query
 
-query request-[fn | completed | value | errors | created | when | until | is-done]
-fn)
+(query
+request-[fn | completed | value | errors | created | when | until | is-done | cancelled | ongoing]
+request)
 
 query belief.[str | fn ])
 

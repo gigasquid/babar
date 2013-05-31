@@ -187,6 +187,16 @@
   (against-background (before :facts (do (reset! x1 1)
                                          (reset-commitments)))))
 
+(facts "about cancelling commitments"
+  (parse "def x atom 1") => anything
+  (parse "request *count ongoing fn [] swap! x inc") => anything
+  (Thread/sleep 5) => anything
+  (> (parse "@x") 1) => true
+  (parse "request-cancel *count") => anything
+  (parse "def y @x") => anything
+  (Thread/sleep 5) => anything
+  (parse "= y @x") => true)
+
 (facts "about processing multi step requests"
   (parse "request *step1 fn [] + 1 1") => anything
   (parse "convince #done1 \"Done with 1\" fn [] query request-is-done *step1") => anything
