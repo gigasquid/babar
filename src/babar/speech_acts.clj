@@ -2,16 +2,14 @@
   (:require [clj-time.core :as time]
             [clj-time.format :as tformat]
             [babar.commands :refer :all]
-            [me.raynes.conch :as conch]
-            ))
-
-(conch/programs say)
+            [me.raynes.conch.low-level :as conchll]))
 
 (def commitments (atom {}))
 (def beliefs (atom {}))
 (def commitments-agent (agent {}))
 (def speak-flag (atom false))
 (def last-said (atom nil))
+(def speak-voice (atom "Bruce"))
 
 (defrecord Commitment [fn val completed created errors when until ongoing cancelled])
 (defrecord Belief [str fn])
@@ -19,8 +17,9 @@
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
 (tformat/unparse built-in-formatter (time/now))
 
-(defn speak-beliefs [val]
-  (if val (reset! speak-flag true) (reset! speak-flag false)))
+(defn speak-beliefs [val & [voice]]
+  (if val (reset! speak-flag true) (reset! speak-flag false))
+  (when voice (reset! speak-voice voice)))
 
 (defn gen-timestamp []
   (tformat/unparse built-in-formatter (time/now)))
@@ -107,7 +106,7 @@
   (when-not (= @last-said str)
     (do
       (reset! last-said str)
-      (future (say str)))))
+      (future (conchll/proc "say" "-v" @speak-voice str)))))
 
 (defn babar-assert ([id val] (babar-def (list (symbol id) val)))
   ([id params form] (babar-defn (list (symbol id) params form))))

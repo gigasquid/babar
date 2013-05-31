@@ -270,7 +270,13 @@ query beliefs.all
 ```
 
 ### Speaking the Beliefs using Say
-* speak-beliefs (speak-beliefs [true | false ]
+* speak-beliefs
+- (speak-beliefs [true | false ])
+- (speak-beliefs true voice-name)
+
+```clojure
+speak-beliefs true ;=> default voice
+sepak-beliefs true "Zarvox" ;=> speak with Zarvox
 
 If you toggle on the speak-beliefs, then (if you have a mac and say),
 then any beliefs will be spoken aloud when there belief fns evaluate

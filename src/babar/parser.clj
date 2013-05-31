@@ -48,7 +48,8 @@
                 'request-cancel' space  <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
-    speak-beliefs = <'speak-beliefs'> space boolean
+    speak-beliefs = <'speak-beliefs'> space boolean /
+                    <'speak-beliefs'> space boolean space string
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
@@ -62,6 +63,7 @@
     number = integer | decimal
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
+
 
 (defn babar-eval [expr]
   (eval expr))
