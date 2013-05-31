@@ -124,7 +124,8 @@ get {:a 1} :a => :a
 Do multiple expressions
 
 ```clojure
-do (def s1 1) (def s2 2)
+do def s1 1
+   def s2 2
 s1 ;=> 1
 s2 ;=> 2
 ```
@@ -343,6 +344,7 @@ You can ask what the value of a identifier is
 ```clojure
 speak-beliefs true ;=> default voice
 sepak-beliefs true "Zarvox" ;=> speak with Zarvox
+```
 
 If you toggle on the speak-beliefs, then (if you have a mac and say),
 then any beliefs will be spoken aloud when there belief fns evaluate

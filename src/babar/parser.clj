@@ -27,8 +27,8 @@
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
     speech-act = commitment | belief | query | request | convince | assertion | speak-beliefs
-    assertion = <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
-                <'assert'> space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
+    assertion = (<'assert'> | <'defn'>) space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
+                (<'assert'> | <'def'>) space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'query' space querytype space (commitment | belief) /
             'query' space querytype space identifier /
             'query' space querytype
@@ -56,7 +56,7 @@
     <operation> =  '+' | '-' | '*' | '/'
     deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*'
-    <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
+    <special> = 'if' | '=' | '<' | '>' | 'and' | 'or'
                 | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep' | 'first' |
                 'atom' | 'swap!' | 'reset!'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
@@ -66,6 +66,17 @@
     <decimal> = #'-?[0-9]+\\.[0-9]+'
     <integer> = #'-?[0-9]+'"))
 
+
+(defn b-declare [s]
+  (eval `(declare ~s)))
+
+(defn babar-indentifier [s]
+  (if (resolve (read-string s))
+    (read-string s)
+    (do
+      (println (str "\nquery " s "."))
+      (b-declare (read-string s))
+      (symbol s))))
 
 (defn babar-eval [expr]
   (eval expr))
@@ -92,7 +103,7 @@
    :request request
    :convince convince
    :speech-act identity
-   :identifier read-string
+   :identifier babar-indentifier
    :commandkey identity
    :command babar-command
    :functioncall babar-functioncall
