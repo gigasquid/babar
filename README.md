@@ -15,7 +15,7 @@ be stable or documentation up to date.
 
 ## Data Types
 Most of the data types are directly from Clojure.  You have integers,
-decimals, strings, booleans, keywords, maps, and vectors,
+decimals, strings, booleans, keywords, maps, vectors, and atoms
 
 ```clojure
 1     ;=> 1
@@ -26,6 +26,7 @@ decimals, strings, booleans, keywords, maps, and vectors,
 true  ;=> true
 {:cat :meow :dog :bark} ;=> {:cat :meow :dog :bark}
 [1 2 true :bird] ;=> [1 2 true bird]
+atom 1 ;=> #<Atom 1>
 ```
 Vectors are a bit interesting in the respect that you don't need
 to input the square brackets.  If you just put in space delimited
@@ -141,6 +142,25 @@ First element of vector
 ````clojure
 first [1 2 3] ;=> 1
 ```
+
+- swap! (swap atom fn)
+applies a fn to the atom and changes the value in a safe manner
+
+```clojure
+def x atom 1 ;=> x
+swap! x inc ;=> 2
+@x ;=> 2
+```
+
+- reset! (swap atom val)
+resets the value of atom in a safe manner
+
+```clojure
+def x atom 1 ;=> x
+reset! x 8 ;=> 8
+@x ;=> 8
+```
+
 
 ### Anonymous Functions
 You can create anonymous functions with the fn [x] syntax from

@@ -54,6 +54,15 @@
 (defn babar-first [v]
   `(if (vector? (first ~v)) (first (first ~v)) (first ~v)))
 
+(defn babar-atom [v]
+  `(atom (first ~v)))
+
+(defn babar-swap [v]
+  `(swap! ~(first v) ~(second v)))
+
+(defn babar-reset [v]
+  `(reset! ~(first v) ~(second v)))
+
 (defn babar-command [command v]
   (case command
     "+" (babar-operation + v)
@@ -74,7 +83,10 @@
     "get" (babar-get v)
     "do" (babar-do v)
     "sleep" (babar-sleep v)
-    "first" (babar-first v)))
+    "first" (babar-first v)
+    "atom" (babar-atom v)
+    "swap!" (babar-swap v)
+    "reset!" (babar-reset v)))
 
 (defn babar-functioncall [sym & [v]]
   `(apply ~sym ~v))

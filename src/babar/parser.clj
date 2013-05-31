@@ -56,7 +56,8 @@
     deref = <'@'> identifier
     identifier =  #'[a-z][0-9a-zA-Z\\-\\_]*'
     <special> = 'def' | 'if' | 'defn' | '=' | '<' | '>' | 'and' | 'or'
-                | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep' | 'first'
+                | 'import' | 'fn' | 'println' | 'get' | 'do' | 'sleep' | 'first' |
+                'atom' | 'swap!' | 'reset!'
     string =  <'\\\"'> #'([^\"\\\\]|\\\\.)*' <'\\\"'>
     keyword = <#'[:]'> #'[\\w|-]+'
     boolean = #'true' | #'false'

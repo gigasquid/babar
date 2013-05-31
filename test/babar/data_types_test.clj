@@ -46,3 +46,6 @@
   (parse "{:cat [1 3 4]}") => {:cat [1 3 4]}
   (parse "{:cat {:dog 1}}") => {:cat {:dog 1}})
 
+(facts "about parsing atoms"
+  (type (parse "atom 1")) => clojure.lang.Atom)
+

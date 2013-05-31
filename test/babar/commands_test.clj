@@ -85,3 +85,11 @@
   (parse "first [1 2 3 4]") => 1
   (def x [2 3 4]) => anything
   (parse "first x") => 2)
+
+(facts "about atoms"
+  (parse "def x atom 2") => anything
+  (parse "@x") => 2
+  (parse "swap! x inc") => 3
+  (parse "@x") => 3
+  (parse "reset! x 8") => 8
+  (parse "@x") => 8)
