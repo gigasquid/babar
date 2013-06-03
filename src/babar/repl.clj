@@ -4,8 +4,11 @@
 
 (defn complete-input? [input]
   (let [lbrackets (count (re-find #"\[" input))
-        rbrackets (count (re-find #"]" input))]
-    (= lbrackets rbrackets)))
+        rbrackets (count (re-find #"]" input))
+        rparens (count (re-find #"\(" input))
+        lparens (count (re-find #"\)" input))
+        ]
+    (and (= lparens rparens) (= lbrackets rbrackets))))
 
 
 (defn get-input [input]
@@ -22,13 +25,24 @@
     (print "babar> ")
     (flush))
   (let [input (get-input "")]
-    (println (parser/parse input))
+    (println (try (parser/parse input)
+                  (catch Exception e (str "Sorry: " e " - " (.getMessage e)))))
     (recur)))
 
 
 (defn -main [& args]
   (parser/init)
+
+
   (println "Hello Babar!")
+  (println "    ____ ")
+  (println "   /.   \\_ ")
+  (println "  /_  \\_/  \\")
+  (println " // \\  ___ ||")
+  (println " \\\\  |_| |_|  ")
+  (println " ")
+
+  (println "ctl-c or quit to exit")
   (println "===============")
   (flush)
   (repl))
