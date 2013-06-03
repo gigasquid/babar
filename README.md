@@ -184,9 +184,11 @@ reset! x 8 ;=> 8
 You can create anonymous functions with the fn [x] syntax from
 clojure. And call them with surrounding parens.
 ````clojure
-   ((fn [x] + x 1) 3) ;=> 4
-   ((fn [x y z] + x y z) [1 2 3]) ;=> 6
-   ((fn [] [4 5 6])) ;=> [4 5 6]
+fn [x] + x 1 ;=> fn
+(fn [x] + x 1) ;=> fn
+((fn [x] + x 1) 3) ;=> 4
+((fn [x y z] + x y z) 1 2 3) ;=> 6
+((fn [] [4 5 6])) ;=> [4 5 6]
 ```
 
 ## Speech Acts
@@ -210,7 +212,7 @@ language.  So far there is support for:
 A commitment is a datatype designated by a *name
 
 ```clojure
-  *bark
+*bark
 ```
 
 - **Belief**  - #name
@@ -218,7 +220,7 @@ A commitment is a datatype designated by a *name
 A belief is a datatype designated by a #name
 
 ```clojure
-  #sunny
+#sunny
 ```
 
 ### Convincing
@@ -230,7 +232,7 @@ readable string as a description and a predicate function that
 evaluates to true when the machine "believes" it.
 
 ```clojure
-   convince #sunny "It is sunny" fn [x] (= 1 1)
+convince #sunny "It is sunny" fn [x] (= 1 1)
 ```
 
 ### Requests
@@ -243,7 +245,7 @@ is an error that occurs, then it will have an error captured that you
 can query by using "query request-errors".
 
 ```clojure
-  request *dog fn [] :bark ;=> babar.speech_acts.Commitment
+request *dog fn [] :bark ;=> babar.speech_acts.Commitment
 ```
 
 - **request when** -  request commitment when belief function
@@ -252,8 +254,8 @@ You can also specify a request to be executed when a belief is held.
 The request is executed when the belief predicate function evaluates
 to true.
 ```clojure
-  convince #too-warm "It is too warm." fn [] > temperature 70
-  request *lower-temp when #too-warm fn [] :lower-the-temp-action
+convince #too-warm "It is too warm." fn [] > temperature 70
+request *lower-temp when #too-warm fn [] :lower-the-temp-action
 ```
 
 - **request until** -  request commitment until belief function
@@ -261,8 +263,8 @@ to true.
 You can specify a request to be executed until a belief is held.
 The request will continue to execute until the belief is held.
 ```clojure
-  convince #just-right "It is just-right" fn [] > @temp 70
-  request *raise-temp until #just-right fn [] (increase-temp)
+convince #just-right "It is just-right" fn [] > @temp 70
+request *raise-temp until #just-right fn [] (increase-temp)
 ```
 
 - **request when until** -  request commitment when belief until function
@@ -271,9 +273,9 @@ You can specify a request to be executed when a belief is held and
 until another belief is held.
 
 ````clojure
-   convince #just-right "It is just-right" fn [] > @temp 70
-   convince #start "Time to start" fn [] > @temp 68
-   request *raise-temp when #start until #just-right fn [] (increase-temp)
+convince #just-right "It is just-right" fn [] > @temp 70
+convince #start "Time to start" fn [] > @temp 68
+request *raise-temp when #start until #just-right fn [] (increase-temp)
 ````
 
 - **request ongoing** -  request commitment ongoing function
@@ -281,7 +283,7 @@ until another belief is held.
 You can specify a request to be executed repeatedly with no end.
 
 ```clojure
-   request *count ongoing fn [] (inc-x1)
+request *count ongoing fn [] (inc-x1)
 ```
 
 - **request when ongoing** - request commitment when belief ongoing function
@@ -290,8 +292,8 @@ You can specify a request to be executed repeatedly with no end, when
 a belief is true.
 
 ```clojure
-  convince #start \"Time to start\" fn [] = y2 2
-  request *count when #start ongoing fn [] (inc-x1)
+convince #start \"Time to start\" fn [] = y2 2
+request *count when #start ongoing fn [] (inc-x1)
 ```
 
 - **cancel-request**  - cancel-request request
@@ -300,7 +302,7 @@ You can cancel a request.  The request itself is still remembered and
 can be queried, but it will not be executed.
 
 ```clojure
-  cancel-request *dog
+cancel-request *dog
 ```
 
 ### Answering Queries
@@ -313,42 +315,43 @@ request-[fn | completed | value | errors | created | when | until | is-done | ca
 request)
 
 ```clojure
-   request *dog fn [] :bark.
-   query request-value *dog ;=> :bark
-   query request-completed * dog ;=> "2013-05-17T19:58:07.882"
-   query request-is-done ;=> true
+request *dog fn [] :bark.
+query request-value *dog ;=> :bark
+query request-completed *dog? ;=> "2013-05-17T19:58:07.882"
+query request-is-done? ;=> true
 ```
 
 - **query belief-[str | fn ]**
 
 ```clojure
-  convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
-  query belief-str #sunny ;=> "It is sunny"
-  query belief-fn #sunny ;=> function
+convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
+query belief-str #sunny ;=> "It is sunny"
+query belief-fn #sunny ;=> function
 ```
 
 - **query requests-all**
 
 ```clojure
-  request *step1 fn [] + 1 1 ;=> commitment
-  request *step2 fn [] + 2 2 ;=> commitment
-  query requests-all ;=>  [:step1 :step2]
+request *step1 fn [] + 1 1 ;=> commitment
+request *step2 fn [] + 2 2 ;=> commitment
+query requests-all ;=>  [:step1 :step2]
 ```
 
 - **query beliefs-all**
 
 ```clojure
-  convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
-  convince #rainy "It is rainy" fn [] = 1 2 ;=> belief
-  query beliefs-all ;=> [:sunny :rainy]
+convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
+convince #rainy "It is rainy" fn [] = 1 2 ;=> belief
+query beliefs-all? ;=> [:sunny :rainy]
+```
 
 - **query value identifier**
 
 You can ask what the value of a identifier is
 
 ```clojure
-  assert x 1 ;=> x
-  query value x ;=> 1
+assert x 1 ;=> x
+query value x ;=> 1
 ```
 
 ### Asking Queries
