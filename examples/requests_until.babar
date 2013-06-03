@@ -1,0 +1,7 @@
+speak-config true.
+
+assert counter atom 1.
+convince #done "I am done counting" fn [] > @counter 3.
+request *count-up until #done fn [] swap! counter inc.
+sleep 25.
+query request-value *count-up?

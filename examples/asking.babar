@@ -1,0 +1,8 @@
+speak-config true.
+ask-config true.
+
+request *task1 fn [] [1 2 babar].
+query request-is-done *task1?
+assert babar "elephant".
+sleep 10.
+query request-is-done *task1?
