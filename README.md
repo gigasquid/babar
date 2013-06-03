@@ -4,7 +4,7 @@ A little language for machines with Speech Acts inspired by
 [Elephant 2000](http://www-formal.stanford.edu/jmc/elephant/elephant.html).
 The parser uses the wonderful Clojure
 [Instaparse](https://github.com/Engelberg/instaparse) library.
-The language aims to have syntacilly sugared "speech acts" that the
+The language aims to have syntactically sugared "speech acts" that the
 machine performs as inputs and outputs.  The language also supports
 beliefs and goals from McCarthy's paper,
 [Ascribing Mental Qualities to Machines](http://www-formal.stanford.edu/jmc/ascribing/ascribing.html).
@@ -15,15 +15,15 @@ following features:
   internal commitments.
 - The Babar program can be convinced of beliefs that can affect when
   and how long a request is executed.
-- The Babar program has one goal - to fufill its commitments.  It
-  checks every 5ms to see if it has any commitments to fufill and will
+- The Babar program has one goal - to fulfill its commitments.  It
+  checks every 5ms to see if it has any commitments to fulfill and will
   execute them based on its beliefs.  (An Elephant is true 100 percent.)
 - The Babar program can be queried about its commitments.  For
   example, was the request completed, what was the value, etc..
 - The Babar program can speak aloud its beliefs.  Specifically, it
   will vocalize any belief that is held (evaluate to true), while it
-  is fufilling commitments.
-- The Babar program remembers all the commmitments that it ever had
+  is fulfilling commitments.
+- The Babar program remembers all the commitments that it ever had
   and they can all be queried - even cancelled ones. (An Elephant
   never forgets.)
 - The Babar program can ask a question - (very experimental still).
@@ -52,7 +52,7 @@ atom 1 ;=> #<Atom 1>
 ```
 Vectors are a bit interesting in the respect that you don't need
 to input the square brackets.  If you just put in space delimited
-items, it will automatically constuct a vector for you.
+items, it will automatically construct a vector for you.
 
 ```clojure
 1 2 3 4 ;=> [1 2 3 4]
@@ -67,7 +67,7 @@ brackets.
 
 ## Operations
 The basic usual suspects are supported : ( +, -, / , *).
-The interesing thing to note is that parens are optional,
+The interesting thing to note is that parens are optional,
 and all operations work on a vector by default - so:
 
 ```clojure
@@ -126,7 +126,7 @@ At this basic level it imports the whole namespace and does require
 
 - **println** -  println item & others
 
-Concatonates the items as a string and prints it out to stdout
+Concatenates the items as a string and prints it out to stdout
 
 ```clojure
 println "cat" ;=> "cat" (returns nil)
@@ -198,11 +198,11 @@ According to John Searle's
 There are [Illocutionary Acts](http://en.wikipedia.org/wiki/Illocutionary_act)
 that involve the pragmatic meaning of a behind a sentence. Some of the
 english verbs denoting these acts are "assert", "command", "request",
-"query". For example the sentance, "Pass the salt.", is an
-illocutionary act.  When a person hears the sentance, the meaning is
+"query". For example the sentence, "Pass the salt.", is an
+illocutionary act.  When a person hears the sentence, the meaning is
 interpreted as a command.  There are also
 [Perlocutionary Acts](http://en.wikipedia.org/wiki/Perlocutionary_act),
-in which signifigance is on the stametment's effect on the hearer's
+in which significance is on the statement's effect on the hearer's
 actions, thoughts, and beliefs.  An example of this is "persuade" or
 "convince".  Some of these speech acts have been incorporated into the
 language.  So far there is support for:
@@ -240,7 +240,7 @@ evaluates to true when the machine "believes" it.
 - **request**  - request commitment function
 
 Accepting a request creates an internal commitment that is evaluated
-at a future time.  Behind the scenese there is a cron-like watcher
+at a future time.  Behind the scenes there is a cron-like watcher
 that continually sees if it has any commitments to execute.  If there
 is an error that occurs, then it will have an error captured that you
 can query by using "query request-errors".
@@ -281,7 +281,7 @@ until another belief is held.
 
 - **request ongoing** -  request commitment ongoing function
 
-You can specify a requst to be executed repeatedly with no end.
+You can specify a request to be executed repeatedly with no end.
 
 ```clojure
    request *count ongoing fn [] (inc-x1)
@@ -338,14 +338,14 @@ request)
   query requests-all ;=>  [:step1 :step2]
 ```
 
-- **query beliefs.all**
+- **query beliefs-all**
 
 ```clojure
   convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
   convince #rainy "It is rainy" fn [] = 1 2 ;=> belief
   query beliefs-all ;=> [:sunny :rainy]
 
-- **query value identifer**
+- **query value identifier**
 
 You can ask what the value of a identifier is
 
@@ -357,7 +357,7 @@ You can ask what the value of a identifier is
 ### Asking Queries
 You can ask queries are well as answering them. Asking a query is
 manifested as a side effect - a printed speech act.  Right now the
-statment prints on the REPL console.  It always could be directed to
+statement prints on the REPL console.  It always could be directed to
 an external file that another system could read...
 
 - **ask-query** identifier
@@ -385,7 +385,7 @@ speak the query aloud as well :)
 
 ```clojure
 speak-beliefs true ;=> default voice
-sepak-beliefs true "Zarvox" ;=> speak with Zarvox
+speak-beliefs true "Zarvox" ;=> speak with Zarvox
 ```
 
 If you toggle on the speak-beliefs, then (if you have a mac and say),
