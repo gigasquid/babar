@@ -355,6 +355,8 @@ query value x ;=> 1
 ```
 
 ### Asking Queries
+*Experimental*
+
 You can ask queries are well as answering them. Asking a query is
 manifested as a side effect - a printed speech act.  Right now the
 statement prints on the REPL console.  It always could be directed to
@@ -363,29 +365,40 @@ an external file that another system could read...
 - **ask-query** identifier
 
 ```clojure
-  ask-query what-is-this ;=> query what-is-this.
+ask-query what-is-this ;=> query what-is-this.
+```
+
+- **ask-config** true | false
+
+This configures the repl to automcatically ask questions about unbound
+vars.
+
+```clojure
+ask-config true
 ```
 
 The REPL will also respond with an ask-query if you define
-a function with a undeclared variable
+a function with a undeclared variable. You need to config to ask
+questions automatically first.
 
 ```clojure
-  assert cat [] + x 1 ;=> query x.
-  assert cat x 2 ;=> x
-  cat: ;=> 3
+ask-config true
+assert cat [] + x 1 ;=> query x.
+assert cat x 2 ;=> x
+cat: ;=> 3
 ```
 
 Even cooler - if the speak-beliefs flag is true, it will also
 speak the query aloud as well :)
 
 ### Speaking the Beliefs using Say
-* **speak-beliefs**
-- speak-beliefs [true | false ]
-- speak-beliefs true voice-name
+* **speak-config**
+- speak-config [true | false ]
+- speak-config true voice-name
 
 ```clojure
-speak-beliefs true ;=> default voice
-speak-beliefs true "Zarvox" ;=> speak with Zarvox
+speak-config true ;=> default voice
+speak-config true "Zarvox" ;=> speak with Zarvox
 ```
 
 If you toggle on the speak-beliefs, then (if you have a mac and say),

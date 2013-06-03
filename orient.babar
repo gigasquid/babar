@@ -1,4 +1,4 @@
-speak-beliefs true.
+speak-config true.
 import "clj-drone.core".
 import "clj-drone.navdata".
 
