@@ -8,7 +8,8 @@ The language aims to have syntactically sugared "speech acts" that the
 machine uses as inputs and outputs.  The language also supports
 beliefs and goals from McCarthy's paper,
 [Ascribing Mental Qualities to Machines](http://www-formal.stanford.edu/jmc/ascribing/ascribing.html).
-expressions and programs are run through the Babar REPL and have the
+
+Expressions and programs are run through the Babar REPL and have the
 following features:
 
 - The Babar program can accept requests, that are then stored as
