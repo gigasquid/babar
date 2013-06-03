@@ -5,7 +5,7 @@ A little language for machines with Speech Acts inspired by
 The parser uses the wonderful Clojure
 [Instaparse](https://github.com/Engelberg/instaparse) library.
 The language aims to have syntactically sugared "speech acts" that the
-machine performs as inputs and outputs.  The language also supports
+machine uses as inputs and outputs.  The language also supports
 beliefs and goals from McCarthy's paper,
 [Ascribing Mental Qualities to Machines](http://www-formal.stanford.edu/jmc/ascribing/ascribing.html).
 expressions and programs are run through the Babar REPL and have the
@@ -14,7 +14,7 @@ following features:
 - The Babar program can accept requests, that are then stored as
   internal commitments.
 - The Babar program can be convinced of beliefs that can affect when
-  and how long a request is executed.
+  and how often a request is executed.
 - The Babar program has one goal - to fulfill its commitments.  It
   checks every 5ms to see if it has any commitments to fulfill and will
   execute them based on its beliefs.  (An Elephant is true 100 percent.)
@@ -27,10 +27,7 @@ following features:
   and they can all be queried - even cancelled ones. (An Elephant
   never forgets.)
 - The Babar program can ask a question - (very experimental still).
-  For any unbound var, it will declare it first and then ask a query
-  in the form of a speech act as a side effect (printed and optionally
-  spoken). A later assertion of the var's value will bind it.  Any
-  requests that were referencing the query will be retried.
+  The only questions that it will ask currently is about undeclared vars.
 
 
 Let's back up a bit and look at the basic datatypes and commands.
