@@ -1,0 +1,10 @@
+speak-config true.
+assert sunny false.
+convince #nice-day "It is a nice day." fn [] = sunny true.
+request *open-window when #nice-day fn [] println "Opened the window".
+sleep 10.
+query request-is-done *open-window?
+
+assert sunny true.
+sleep 10.
+query request-is-done *open-window?

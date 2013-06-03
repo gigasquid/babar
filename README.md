@@ -437,6 +437,23 @@ or run the standalone shell script
 
    ./bin/babar.sh
 
+## Examples
+There are a couple of examples to get you going with playing with it.
+To run the examples:
+
+- launch a repl using 'lein run' or './bin/babar.sh'
+
+At the babar repl prompt
+
+   read "./examples/simple.babar"
+
+
+There is also a "speech_acts.babar".  The program has the speak-config
+set to true.  This will work fine if you have a mac, just turn it to
+false if you are on another system.
+
+Have fun!
+
 ## TESTS
 
     lein midje
