@@ -210,17 +210,24 @@
   (against-background (before :facts (reset-commitments))))
 
 
-(facts "about speak-beliefs"
-  (parse "speak-beliefs true") => anything
+(facts "about speak-config"
+  (parse "speak-config true") => anything
   @speak-flag => true
-  (parse "speak-beliefs false") => anything
+  (parse "speak-config false") => anything
   @speak-flag => false)
+
+(facts "about ask-config"
+  (parse "ask-config true") => anything
+  @ask-flag => true
+  (parse "ask-config false") => anything
+  @ask-flag => false)
 
 (facts "about querying values"
   (def x 1)
   (parse "query value x") => 1)
 
 (facts "about asking questions about unbound vars"
+  (parse "ask-config true")
   (parse "assert cat [] + x 1") => anything
   (parse "assert x 2") => anything
   (parse "cat:") => 3)

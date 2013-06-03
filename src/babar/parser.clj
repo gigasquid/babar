@@ -26,7 +26,7 @@
     <space> = <#'[\\s\\t\\n\\,]+'>
     <item> = command / speech-act / deref / functioncall / string / number / boolean /
              keyword / bvector / map / identifier
-    speech-act = commitment | belief | query | request | convince | assertion | speak-beliefs
+    speech-act = commitment | belief | query | request | convince | assertion | speak-config | ask-config
     assertion = (<'assert'> | <'defn'>) space #'[a-z][0-9a-zA-Z\\-\\_]*' space bvector space item /
                 (<'assert'> | <'def'>) space #'[a-z][0-9a-zA-Z\\-\\_]*' space item
     query = 'query' space querytype space (commitment | belief) /
@@ -50,8 +50,9 @@
                 'request-cancel' space  <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     convince = 'convince' space <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
                space string space expr
-    speak-beliefs = <'speak-beliefs'> space boolean /
-                    <'speak-beliefs'> space boolean space string
+    speak-config = <'speak-config'> space boolean /
+                    <'speak-config'> space boolean space string
+    ask-config = <'ask-config'> space boolean
     commitment = <'*'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     belief = <'#'> #'[a-z][0-9a-zA-Z\\-\\_]*'
     <operation> =  '+' | '-' | '*' | '/'
@@ -72,8 +73,8 @@
   (eval expr))
 
 (defn eval-program [expr-list]
-  (let [evaled-list (doall (map babar-eval expr-list))]
-    (last evaled-list)))
+  (let [result (babar-eval (first expr-list))]
+    (if (empty? (rest expr-list)) result (recur (rest expr-list)))))
 
 (defn read-program [filename]
   `(parse (slurp ~filename)))
@@ -101,7 +102,8 @@
    :querytype identity
    :query query
    :readprogram read-program
-   :speak-beliefs speak-beliefs
+   :speak-config speak-config
+   :ask-config ask-config
    :program (comp eval-program list)})
 
 (defn parse [input]

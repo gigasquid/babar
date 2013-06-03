@@ -8,6 +8,7 @@
 (def beliefs (atom {}))
 (def commitments-agent (agent {}))
 (def speak-flag (atom false))
+(def ask-flag (atom false))
 (def last-said (atom nil))
 (def speak-voice (atom "Bruce"))
 
@@ -17,9 +18,12 @@
 (def built-in-formatter (tformat/formatters :date-hour-minute-second-ms))
 (tformat/unparse built-in-formatter (time/now))
 
-(defn speak-beliefs [val & [voice]]
+(defn speak-config [val & [voice]]
   (if val (reset! speak-flag true) (reset! speak-flag false))
   (when voice (reset! speak-voice voice)))
+
+(defn ask-config [val]
+  (if val (reset! ask-flag true) (reset! ask-flag false)))
 
 (defn gen-timestamp []
   (tformat/unparse built-in-formatter (time/now)))
@@ -180,8 +184,10 @@
 (defn babar-indentifier [s]
   (if (resolve (read-string s))
     (read-string s)
-    (do
-      (ask-query s)
-      (b-declare (read-string s))
-      (symbol s))))
+    (if @ask-flag
+      (do
+        (ask-query s)
+        (b-declare (read-string s))
+        (symbol s))
+      (read-string s))))
 
