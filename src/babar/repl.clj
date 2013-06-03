@@ -1,4 +1,5 @@
 (ns babar.repl
+  (:gen-class)
   (:require [babar.parser :as parser]))
 
 

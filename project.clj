@@ -5,9 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main babar.repl
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [instaparse "1.0.1"]
+                 [instaparse/instaparse-carin "1.1.0"]
                  [clj-time "0.5.0"]
-                 [me.raynes/conch "0.5.0"]
-                 [clj-drone "0.1.4"]]
+                 [me.raynes/conch "0.5.0"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]
                    :plugins [[lein-midje "2.0.1"]] }})
