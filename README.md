@@ -1,17 +1,39 @@
 # babar
 
-A Programming Language with Speech Acts inspired by
+A little language for machines with Speech Acts inspired by
 [Elephant 2000](http://www-formal.stanford.edu/jmc/elephant/elephant.html).
 The parser uses the wonderful Clojure
 [Instaparse](https://github.com/Engelberg/instaparse) library.
-The language goals are to explore some concepts of speech acts. To
-support this goal, there is some syntatic sugar to make the language
-more readable as sentances. The main manifestation is that parens
-are optional.
+The language aims to have syntacilly sugared "speech acts" that the
+machine performs as inputs and outputs.  The language also supports
+beliefs and goals from McCarthy's paper,
+[Ascribing Mental Qualities to Machines](http://www-formal.stanford.edu/jmc/ascribing/ascribing.html).
+expressions and programs are run through the Babar REPL and have the
+following features:
 
-This language is a playground, so don't expect things to
-be stable or documentation up to date.
+- The Babar program can accept requests, that are then stored as
+  internal commitments.
+- The Babar program can be convinced of beliefs that can affect when
+  and how long a request is executed.
+- The Babar program has one goal - to fufill its commitments.  It
+  checks every 5ms to see if it has any commitments to fufill and will
+  execute them based on its beliefs.  (An Elephant is true 100 percent.)
+- The Babar program can be queried about its commitments.  For
+  example, was the request completed, what was the value, etc..
+- The Babar program can speak aloud its beliefs.  Specifically, it
+  will vocalize any belief that is held (evaluate to true), while it
+  is fufilling commitments.
+- The Babar program remembers all the commmitments that it ever had
+  and they can all be queried - even cancelled ones. (An Elephant
+  never forgets.)
+- The Babar program can ask a question - (very experimental still).
+  For any unbound var, it will declare it first and then ask a query
+  in the form of a speech act as a side effect (printed and optionally
+  spoken). A later assertion of the var's value will bind it.  Any
+  requests that were referencing the query will be retried.
 
+
+Let's back up a bit and look at the basic datatypes and commands.
 
 ## Data Types
 Most of the data types are directly from Clojure.  You have integers,
@@ -59,44 +81,42 @@ Is the same as:
 
 ## Commands
 A subset of the clojure commands have been included. This will
-grow in time.  Mind you parens are optional.  You can call functions
+grow in time.  Mind you parens are optional in most cases.  You can call functions
 with the typical () or with a shorthand : syntax
 
-- def (def identifier expression)
+- **def**  - def identifier expression
 ```clojure
   (def dog 16)
   dog ;=> 16
-  
   def cat 18
   cat ;=> 18
 ```
-- defn (defn identifier params expression)
+- **defn** -  defn identifier params expression
 ```clojure
   (defn cat [x] (+ x 2))
   (cat 2); => 4
-  
   defn dog [] "woof"
   dog: ;=> "woof"
 ```
-- if  (if predicate truecase falsecase)
+- **if**  - if predicate truecase falsecase
 ```clojure
   if true :cat :dog ;=> :cat
 ```
-- =, <, >
+- **=**, **<**,**>** -  operator val1 val2
 ```clojure
   = :dog :dog ;=> true
   ```
-- and  (and val1 val2 & others)
+- **and** - and val1 val2 & others
 ```clojure
   and true true true ;=> true
   and true true false ;=> false
 ```
-- or  (or val1 val2 & others)
+- **or**  - or val1 val2 & others
 ```clojure
   or true false true ;=> true
   or false false false ;=> false
 ```
-- import (import "ns")
+- **import**  - import "ns"
 There is basic support for importing clojure namespaces.
 At this basic level it imports the whole namespace and does require
 :refer :all
@@ -104,7 +124,7 @@ At this basic level it imports the whole namespace and does require
   import "clojure.java.io"
 ```
 
-- println (println item & others)
+- **println** -  println item & others
 
 Concatonates the items as a string and prints it out to stdout
 
@@ -113,14 +133,14 @@ println "cat" ;=> "cat" (returns nil)
 println "cat" " " 1 " " :duck ;=> "cat 1 :duck" (returns nil)
 ```
 
-- get (get hash key)
+- **get** -  get hash key
 Gets the value of a hash by key
 
 ```clojure
 get {:a 1} :a => :a
 ```
 
-- do (do expr expr+)
+- **do**  - do expr expr+
 Do multiple expressions
 
 ```clojure
@@ -130,21 +150,21 @@ s1 ;=> 1
 s2 ;=> 2
 ```
 
-- sleep (sleep ms)
+- **sleep** - sleep ms
 Sleep for given milliseconds
 
 ```clojure
 sleep 5
 ```
 
-- first (first vec)
+- **first**  - first vec
 First element of vector
 
 ````clojure
 first [1 2 3] ;=> 1
 ```
 
-- swap! (swap atom fn)
+- **swap!**  - swap atom fn
 applies a fn to the atom and changes the value in a safe manner
 
 ```clojure
@@ -153,7 +173,7 @@ swap! x inc ;=> 2
 @x ;=> 2
 ```
 
-- reset! (swap atom val)
+- **reset!** -  swap atom val
 resets the value of atom in a safe manner
 
 ```clojure
@@ -177,7 +197,7 @@ According to John Searle's
 [Speech Acts](http://en.wikipedia.org/wiki/Speech_act)
 There are [Illocutionary Acts](http://en.wikipedia.org/wiki/Illocutionary_act)
 that involve the pragmatic meaning of a behind a sentence. Some of the
-english verbs denoting these acts are "assert", "command", "request", 
+english verbs denoting these acts are "assert", "command", "request",
 "query". For example the sentance, "Pass the salt.", is an
 illocutionary act.  When a person hears the sentance, the meaning is
 interpreted as a command.  There are also
@@ -188,7 +208,7 @@ actions, thoughts, and beliefs.  An example of this is "persuade" or
 language.  So far there is support for:
 
 ### Datatypes
-- Commitment (*name)
+- **Commitment** -  *name
 
 A commitment is a datatype designated by a *name
 
@@ -196,7 +216,7 @@ A commitment is a datatype designated by a *name
   *bark
 ```
 
-- Belief (#name)
+- **Belief**  - #name
 
 A belief is a datatype designated by a #name
 
@@ -206,7 +226,7 @@ A belief is a datatype designated by a #name
 
 ### Convincing
 
-- convinced (convinced belief string predicate-function)
+- **convince**  - convinced belief string predicate-function
 
 To be convinced will create an internal belief that has a human
 readable string as a description and a predicate function that
@@ -217,7 +237,7 @@ evaluates to true when the machine "believes" it.
 ```
 
 ### Requests
-- request (request commitment function)
+- **request**  - request commitment function
 
 Accepting a request creates an internal commitment that is evaluated
 at a future time.  Behind the scenese there is a cron-like watcher
@@ -229,7 +249,7 @@ can query by using "query request-errors".
   request *dog fn [] :bark ;=> babar.speech_acts.Commitment
 ```
 
-- request when (request commitment when belief function)
+- **request when** -  request commitment when belief function
 
 You can also specify a request to be executed when a belief is held.
 The request is executed when the belief predicate function evaluates
@@ -239,7 +259,7 @@ to true.
   request *lower-temp when #too-warm fn [] :lower-the-temp-action
 ```
 
-- request until (request commitment until belief function)
+- **request until** -  request commitment until belief function
 
 You can specify a request to be executed until a belief is held.
 The request will continue to execute until the belief is held.
@@ -248,7 +268,7 @@ The request will continue to execute until the belief is held.
   request *raise-temp until #just-right fn [] (increase-temp)
 ```
 
-- request when until (request commitment when belief until function)
+- **request when until** -  request commitment when belief until function
 
 You can specify a request to be executed when a belief is held and
 until another belief is held.
@@ -259,7 +279,7 @@ until another belief is held.
    request *raise-temp when #start until #just-right fn [] (increase-temp)
 ````
 
-- request ongoing (request commitment ongoing function)
+- **request ongoing** -  request commitment ongoing function
 
 You can specify a requst to be executed repeatedly with no end.
 
@@ -267,8 +287,7 @@ You can specify a requst to be executed repeatedly with no end.
    request *count ongoing fn [] (inc-x1)
 ```
 
-- request when ongoing (request commitment when belief ongoing
-  function)
+- **request when ongoing** - request commitment when belief ongoing function
 
 You can specify a request to be executed repeatedly with no end, when
 a belief is true.
@@ -278,7 +297,7 @@ a belief is true.
   request *count when #start ongoing fn [] (inc-x1)
 ```
 
-- cancel-request  (cancel-request request)
+- **cancel-request**  - cancel-request request
 
 You can cancel a request.  The request itself is still remembered and
 can be queried, but it will not be executed.
@@ -292,7 +311,7 @@ can be queried, but it will not be executed.
 
 Answering questions about requests, beliefs and values.
 
-- (query
+- **query** -
 request-[fn | completed | value | errors | created | when | until | is-done | cancelled | ongoing]
 request)
 
@@ -303,7 +322,7 @@ request)
    query request-is-done ;=> true
 ```
 
-- query belief-[str | fn ])
+- **query belief-[str | fn ]**
 
 ```clojure
   convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
@@ -311,7 +330,7 @@ request)
   query belief-fn #sunny ;=> function
 ```
 
-- query requests-all
+- **query requests-all**
 
 ```clojure
   request *step1 fn [] + 1 1 ;=> commitment
@@ -319,14 +338,14 @@ request)
   query requests-all ;=>  [:step1 :step2]
 ```
 
-- query beliefs.all
+- **query beliefs.all**
 
 ```clojure
   convince #sunny "It is sunny" fn [] = 1 1 ;=> belief
   convince #rainy "It is rainy" fn [] = 1 2 ;=> belief
   query beliefs-all ;=> [:sunny :rainy]
 
-- query value identifer
+- **query value identifer**
 
 You can ask what the value of a identifier is
 
@@ -341,7 +360,7 @@ manifested as a side effect - a printed speech act.  Right now the
 statment prints on the REPL console.  It always could be directed to
 an external file that another system could read...
 
-- ask-query identifier
+- **ask-query** identifier
 
 ```clojure
   ask-query what-is-this ;=> query what-is-this.
@@ -360,9 +379,9 @@ Even cooler - if the speak-beliefs flag is true, it will also
 speak the query aloud as well :)
 
 ### Speaking the Beliefs using Say
-* speak-beliefs
-- (speak-beliefs [true | false ])
-- (speak-beliefs true voice-name)
+* **speak-beliefs**
+- speak-beliefs [true | false ]
+- speak-beliefs true voice-name
 
 ```clojure
 speak-beliefs true ;=> default voice
@@ -376,7 +395,7 @@ beliefs, (like using an until), then it will only speak when the
 belief changes.
 
 ## Reading babar programs
-* read (read filename)
+* **read** - read filename
 
 This command will read a *.babar file into the repl and evaluate it
 it.  A program is composed of multiple expressions that are delimited
