@@ -441,14 +441,20 @@ or run the standalone shell script
 There are a couple of examples to get you going with playing with it.
 To run the examples:
 
-- launch a repl using 'lein run' or './bin/babar.sh'
+- launch a repl using ```'lein run'``` or ```./bin/babar.sh'```
 
 At the babar repl prompt
 
-   read "./examples/simple.babar"
+````
+read "./examples/simple.babar"
+```
 
+There are also other example programs.
+ - examples/speech_acts.babar
+ - examples/requests_until.babar
+ - examples/asking.babar
 
-There is also a "speech_acts.babar".  The program has the speak-config
+The programs has the speak-config
 set to true.  This will work fine if you have a mac, just turn it to
 false if you are on another system.
 
