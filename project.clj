@@ -1,11 +1,11 @@
-(defproject babar "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject babar "0.1.0"
+  :description "A little language for machines based on the speech acts"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main babar.repl
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [instaparse/instaparse-carin "1.1.0"]
+                 [instaparse "1.1.0"]
                  [clj-time "0.5.0"]
                  [me.raynes/conch "0.5.0"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]

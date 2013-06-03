@@ -433,6 +433,10 @@ Launch a REPL
 
     lein run
 
+or run the standalone shell script
+
+   ./bin/babar.sh
+
 ## TESTS
 
     lein midje
