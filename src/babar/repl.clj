@@ -10,7 +10,6 @@
         ]
     (and (= lparens rparens) (= lbrackets rbrackets))))
 
-
 (defn get-input [input]
   (let [new-input (str input (read-line))]
     (if (complete-input? new-input)
@@ -20,14 +19,19 @@
         (flush)
         (recur (str new-input "\n"))))))
 
+
 (defn repl []
   (do
     (print "babar> ")
     (flush))
   (let [input (get-input "")]
-    (println (try (parser/parse input)
-                  (catch Exception e (str "Sorry: " e " - " (.getMessage e)))))
-    (recur)))
+    (if-not (= input "quit")
+     (do
+       (println (try (parser/parse input)
+                     (catch Exception e (str "Sorry: " e " - " (.getMessage e)))))
+       (recur))
+     (do (println "Bye!")
+         (System/exit 0)))))
 
 
 (defn -main [& args]

@@ -424,6 +424,8 @@ Launch a REPL
 
     lein midje
 
+## Ascii Art
+  The lovely ascii elepant is a modified version of the one found [here](http://www.retrojunkie.com/asciiart/animals/elephant.htm)
 
 ## License
 
