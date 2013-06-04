@@ -483,7 +483,7 @@ I made a few videos to show Babar in action
 - An example of Babar REPL using a request with an until belief
   [video] (https://www.youtube.com/watch?v=aT8MK0w71LM)
 - An example of Babar REPL asking you a question about an undeclared
-  var [video] (https://www.youtube.com/watch?v=aT8MK0w71LM)
+  var [video] (https://www.youtube.com/watch?v=nmi_fafmjsg)
 - An example of Babar REPL flying an AR Drone with Speech Acts [video] (https://www.youtube.com/watch?v=CIzR8jD2d3c)
 
 ## TESTS
