@@ -474,6 +474,18 @@ false if you are on another system.
 
 Have fun!
 
+## Videos
+
+I made a few videos to show Babar in action
+
+- An example of the Babar REPL speaking beliefs with requests
+  [video](https://www.youtube.com/watch?v=bt2iYsVyCOM)
+- An example of Babar REPL using a request with an until belief
+  [video] (https://www.youtube.com/watch?v=aT8MK0w71LM)
+- An example of Babar REPL asking you a question about an undeclared
+  var [video] (https://www.youtube.com/watch?v=aT8MK0w71LM)
+- An example of Babar REPL flying an AR Drone with Speech Acts [video] (https://www.youtube.com/watch?v=CIzR8jD2d3c)
+
 ## TESTS
 
     lein midje
