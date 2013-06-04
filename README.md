@@ -1,5 +1,18 @@
 # babar
 
+```
+Hello Babar!
+    ____ 
+   /.   \_ 
+  /_  \_/  \
+ // \  ___ ||
+ \\  |_| |_|  
+ 
+ctl-c or quit to exit
+===============
+babar> 
+```
+
 A little language for machines with Speech Acts inspired by
 [Elephant 2000](http://www-formal.stanford.edu/jmc/elephant/elephant.html).
 The parser uses the wonderful Clojure
