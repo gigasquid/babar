@@ -407,8 +407,8 @@ speak the query aloud as well :)
 
 ### Speaking the Beliefs using Say
 * **speak-config**
-- speak-config [true | false ]
-- speak-config true voice-name
+- **speak-config** [true | false ]
+- **speak-config** true voice-name
 
 ```clojure
 speak-config true ;=> default voice
