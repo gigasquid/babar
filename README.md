@@ -22,6 +22,7 @@ machine uses as inputs and outputs.  The language also supports
 beliefs and goals from McCarthy's paper,
 [Ascribing Mental Qualities to Machines](http://www-formal.stanford.edu/jmc/ascribing/ascribing.html).
 
+
 Expressions and programs are run through the Babar REPL and have the
 following features:
 
@@ -89,6 +90,7 @@ Is the same as:
 ````clojure
 + 1 2 3 4 5 ;=> 15
 ````
+
 
 ## Commands
 A subset of the clojure commands have been included. This will
@@ -306,7 +308,7 @@ You can specify a request to be executed repeatedly with no end, when
 a belief is true.
 
 ```clojure
-convince #start \"Time to start\" fn [] = y2 2
+convince #start "Time to start" fn [] = y2 2
 request *count when #start ongoing fn [] (inc-x1)
 ```
 
