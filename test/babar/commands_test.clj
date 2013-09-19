@@ -59,8 +59,8 @@
 
 
 (facts "about import"
-   (parse "import \"clojure.java.io\"")
-   (class (parse "file")) => clojure.java.io$file)
+  (parse "import \"clojure.java.io\"")
+  (class (parse "(file \"test\")")) => java.io.File)
 
 (facts "about println"
   (parse "println \"cat\"") => nil
