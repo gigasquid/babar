@@ -3,11 +3,13 @@ speak-config true.
 import "clj-drone.core".
 import "clj-drone.navdata".
 
-assert get-navdata [key] get @nav-data key.
-assert navdata-equal [key val] = (get-navdata key) val.
-assert navdata-gt [key val] > (get-navdata key) val.
-assert init-drone [] (drone-initialize).
-assert init-nav [] (drone-init-navdata).
+(drone-initialize).
+
+assert navdata (get-nav-data :default).
+assert drone-navdata [key] get @navdata key.
+assert navdata-equal [key val] = (drone-navdata key) val.
+assert navdata-gt [key val] > (drone-navdata key) val.
+
 
 convince #landed "I am on the ground" fn [] (navdata-equal :control-state :landed).
 convince #flying "I am flying" fn [] or (navdata-equal :control-state :flying)
@@ -21,3 +23,5 @@ request *land when #high-enough fn [] (drone :land).
 convince #done "Whee! I am done." fn [] and (navdata-equal :control-state :landed)
                                             query request-is-done *land.
 request *end-navstream when #done fn [] (end-navstream).
+
+(drone-init-navdata).

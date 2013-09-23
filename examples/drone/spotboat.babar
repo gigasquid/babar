@@ -1,0 +1,23 @@
+speak-config true.
+
+import "clj-drone.core".
+import "clj-drone.navdata".
+
+(drone-initialize).
+(drone-init-navdata).
+
+assert navdata (get-nav-data :default).
+assert drone-navdata [key] get @navdata key.
+assert navdata-equal [key val] = (drone-navdata key) val.
+assert navdata-gt [key val] > (drone-navdata key) val.
+assert see-boat false.
+
+convince #spotboat "I see a boat!" fn [] = see-boat true.
+convince #high-enough "I am signalling the boat" fn [] (navdata-gt :altitude 1.3).
+
+request *take-off when #spotboat fn [] (drone :take-off).
+request *cruising-alt when #flying until #high-enough fn [] (drone :up 0.3).
+request *land when #high-enough fn [] do (drone :hover)
+                                         (drone :anim-double-phi-theta-mixed)
+                                         (sleep 5000)
+                                         (drone :land).
