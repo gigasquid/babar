@@ -54,7 +54,7 @@ decimals, strings, booleans, keywords, maps, vectors, and atoms
 ```clojure
 1     ;=> 1
 2.3   ;=> 2.3
--3.4  ;=> 3.4
+-3.4  ;=> -3.4
 "cat" ;=> cat
 :bird ;=> bird
 true  ;=> true
