@@ -45,6 +45,26 @@ following features:
   The only questions that it will ask currently is about undeclared vars.
 
 
+## Installation
+Git clone this repo
+
+In some of the examples, I hook up to the clj-drone library,
+which uses some local jars.
+
+You need to install the h264 (for video conversion) jar locally.  You can use the
+[lein-localrepo](https://github.com/kumarshantanu/lein-localrepo) plug
+in. Run:
+
+    lein localrepo install dronelibs/h264-decoder-1.0.jar h264-decoder/h264-decoder 1.0
+    lein localrepo install dronelibs/opencv-245.jar opencv/opencv 2.4.5
+
+
+Or - If you don't really care about drone stuff - feel free to remove
+the clj-drone from the project.clj
+
+
+
+
 Let's back up a bit and look at the basic datatypes and commands.
 
 ## Data Types
