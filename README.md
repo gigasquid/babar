@@ -256,7 +256,7 @@ A commitment is a datatype designated by a *name
 A belief is a datatype designated by a #name
 
 ```clojure
-#sunny
+# sunny
 ```
 
 ### Convincing
