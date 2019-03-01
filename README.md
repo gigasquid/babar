@@ -219,7 +219,8 @@ reset! x 8 ;=> 8
 ### Anonymous Functions
 You can create anonymous functions with the fn [x] syntax from
 clojure. And call them with surrounding parens.
-````clojure
+
+```clojure
 fn [x] + x 1 ;=> fn
 (fn [x] + x 1) ;=> fn
 ((fn [x] + x 1) 3) ;=> 4
@@ -481,7 +482,7 @@ To run the examples:
 
 At the babar repl prompt
 
-````
+```
 read "./examples/simple.babar"
 ```
 
