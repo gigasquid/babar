@@ -193,7 +193,7 @@ sleep 5
 - **first**  - first vec
 First element of vector
 
-````clojure
+```clojure
 first [1 2 3] ;=> 1
 ```
 
